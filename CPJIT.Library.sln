@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPJIT.Library.Test", "CPJIT.Library.Test\CPJIT.Library.Test.csproj", "{BABA535A-4340-4791-8257-B6FA8F187BB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPJIT.Library.Util", "CPJIT.Library.Util\CPJIT.Library.Util.csproj", "{57805426-3473-4021-8C80-28187FAD93EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BABA535A-4340-4791-8257-B6FA8F187BB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BABA535A-4340-4791-8257-B6FA8F187BB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BABA535A-4340-4791-8257-B6FA8F187BB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BABA535A-4340-4791-8257-B6FA8F187BB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57805426-3473-4021-8C80-28187FAD93EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57805426-3473-4021-8C80-28187FAD93EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57805426-3473-4021-8C80-28187FAD93EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57805426-3473-4021-8C80-28187FAD93EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
