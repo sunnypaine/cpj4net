@@ -7,6 +7,7 @@
  * *******************************************************/
 
 using System;
+using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -66,6 +67,11 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <returns>受影响的行数</returns>
         public int ExecuteNonQuery(string cmdText, CommandType cmdType)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+
             int r;
             using (SqlConnection cn = new SqlConnection(conString))
             {
@@ -92,19 +98,36 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数)</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>受影响的行数</returns>
-        public int ExecuteNonQuery(string cmdText, CommandType cmdType, IDataParameter[] paras)
+        public int ExecuteNonQuery(string cmdText, CommandType cmdType, Hashtable paras)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+            if (paras == null || paras.Count <= 0)
+            {
+                throw new ArgumentNullException("指定的参数paras为null或者没有有效的值。");
+            }
+
             int r;
             using (SqlConnection cn = new SqlConnection(conString))
             {
                 try
                 {
+                    SqlParameter[] sqlParameter = new SqlParameter[paras.Count];
+                    int i = 0;
+                    foreach (DictionaryEntry de in paras)
+                    {
+                        sqlParameter[i] = new SqlParameter(de.Key.ToString(), de.Value);
+                        i++;
+                    }
+
                     cn.Open();
                     SqlCommand cmd = new SqlCommand(cmdText, cn);
                     cmd.CommandType = cmdType;
-                    cmd.Parameters.AddRange(paras);
+                    cmd.Parameters.AddRange(sqlParameter);
                     r = cmd.ExecuteNonQuery();
                 }
                 catch (Exception e)
@@ -118,18 +141,23 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <summary>
         /// 执行SQL查询语句或者存储过程，返回DataSet
         /// </summary>
-        /// <param name="cmdTex">执行的命令或者存储过程的名称</param>
+        /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
         /// <returns>返回DataSet</returns>
-        public DataSet ExecuteDateSet(string cmdTex, CommandType cmdType)
+        public DataSet ExecuteDateSet(string cmdText, CommandType cmdType)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+
             DataSet ds = new DataSet();
             using (SqlConnection cn = new SqlConnection(conString))
             {
                 try
                 {
                     cn.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmdTex, cn);
+                    SqlDataAdapter da = new SqlDataAdapter(cmdText, cn);
                     da.SelectCommand.CommandType = cmdType;
                     da.Fill(ds);
                 }
@@ -144,21 +172,38 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <summary>
         /// 执行带参数的SQL查询语句或者存储过程，返回DataSet
         /// </summary>
-        /// <param name="cmdTex">执行的命令或者存储过程的名称</param>
+        /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数)</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回DataSet</returns>
-        public DataSet ExecuteDateSet(string cmdTex, CommandType cmdType, IDataParameter[] paras)
+        public DataSet ExecuteDateSet(string cmdText, CommandType cmdType, Hashtable paras)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+            if (paras == null || paras.Count <= 0)
+            {
+                throw new ArgumentNullException("指定的参数paras为null或者没有有效的值。");
+            }
+
             DataSet ds = new DataSet();
             using (SqlConnection cn = new SqlConnection(conString))
             {
                 try
                 {
+                    SqlParameter[] sqlParameter = new SqlParameter[paras.Count];
+                    int i = 0;
+                    foreach (DictionaryEntry de in paras)
+                    {
+                        sqlParameter[i] = new SqlParameter(de.Key.ToString(), de.Value);
+                        i++;
+                    }
+
                     cn.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmdTex, cn);
+                    SqlDataAdapter da = new SqlDataAdapter(cmdText, cn);
                     da.SelectCommand.CommandType = cmdType;
-                    da.SelectCommand.Parameters.AddRange(paras);
+                    da.SelectCommand.Parameters.AddRange(sqlParameter);
                     da.Fill(ds);
                 }
                 catch (Exception e)
@@ -177,6 +222,11 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <returns>返回SqlDatareader对象</returns>
         public IDataReader ExecuteDataReader(string cmdText, CommandType cmdType)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+
             SqlDataReader dr = null;
             SqlConnection cn = new SqlConnection(conString);
             try
@@ -199,18 +249,35 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回SqlDatareader对象</returns>
-        public IDataReader ExecuteDataReader(string cmdText, CommandType cmdType, IDataParameter[] paras)
+        public IDataReader ExecuteDataReader(string cmdText, CommandType cmdType, Hashtable paras)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+            if (paras == null || paras.Count <= 0)
+            {
+                throw new ArgumentNullException("指定的参数paras为null或者没有有效的值。");
+            }
+
             SqlDataReader dr = null;
             SqlConnection cn = new SqlConnection(conString);
             try
             {
+                SqlParameter[] sqlParameter = new SqlParameter[paras.Count];
+                int i = 0;
+                foreach (DictionaryEntry de in paras)
+                {
+                    sqlParameter[i] = new SqlParameter(de.Key.ToString(), de.Value);
+                    i++;
+                }
+
                 cn.Open();
                 SqlCommand cmd = new SqlCommand(cmdText, cn);
                 cmd.CommandType = cmdType;
-                cmd.Parameters.AddRange(paras);
+                cmd.Parameters.AddRange(sqlParameter);
                 //CommandBehavior.CloseConnection暂时让SqlConnection对象不关闭，当SqlDataReader对象调用完毕也关闭的后才关闭连接
                 dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
@@ -229,6 +296,11 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <returns>返回object类型的字段变量</returns>
         public object ExecuteScalar(string cmdText, CommandType cmdType)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+
             object o;
             using (SqlConnection cn = new SqlConnection(conString))
             {
@@ -252,19 +324,36 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回object类型的字段变量</returns>
-        public object ExecuteScalar(string cmdText, CommandType cmdType, IDataParameter[] paras)
+        public object ExecuteScalar(string cmdText, CommandType cmdType, Hashtable paras)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+            if (paras == null || paras.Count <= 0)
+            {
+                throw new ArgumentNullException("指定的参数paras为null或者没有有效的值。");
+            }
+
             object o;
             using (SqlConnection cn = new SqlConnection(conString))
             {
                 try
                 {
+                    SqlParameter[] sqlParameter = new SqlParameter[paras.Count];
+                    int i = 0;
+                    foreach (DictionaryEntry de in paras)
+                    {
+                        sqlParameter[i] = new SqlParameter(de.Key.ToString(), de.Value);
+                        i++;
+                    }
+
                     cn.Open();
                     SqlCommand cmd = new SqlCommand(cmdText, cn);
                     cmd.CommandType = cmdType;
-                    cmd.Parameters.AddRange(paras);
+                    cmd.Parameters.AddRange(sqlParameter);
                     o = cmd.ExecuteScalar();
                 }
                 catch (Exception e)

@@ -8,6 +8,7 @@
 
 using Oracle.ManagedDataAccess.Client;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
     /// <summary>
     /// MSSQL数据库访问工具
     /// </summary>
-    public class OracleHelper
+    public class OracleHelper : IDBAccess
     {
         /// <summary>
         /// 连接数据库的字符串
@@ -67,6 +68,11 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <returns>受影响的行数</returns>
         public int ExecuteNonQuery(string cmdText, CommandType cmdType)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+
             int r;
             using (OracleConnection cn = new OracleConnection(conString))
             {
@@ -93,19 +99,36 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数)</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>受影响的行数</returns>
-        public int ExecuteNonQuery(string cmdText, CommandType cmdType, OracleParameter[] paras)
+        public int ExecuteNonQuery(string cmdText, CommandType cmdType, Hashtable paras)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+            if (paras == null || paras.Count <= 0)
+            {
+                throw new ArgumentNullException("指定的参数paras为null或者没有有效的值。");
+            }
+
             int r;
             using (OracleConnection cn = new OracleConnection(conString))
             {
                 try
                 {
+                    OracleParameter[] sqlParameter = new OracleParameter[paras.Count];
+                    int i = 0;
+                    foreach (DictionaryEntry de in paras)
+                    {
+                        sqlParameter[i] = new OracleParameter(de.Key.ToString(), de.Value);
+                        i++;
+                    }
+
                     cn.Open();
                     OracleCommand cmd = new OracleCommand(cmdText, cn);
                     cmd.CommandType = cmdType;
-                    cmd.Parameters.AddRange(paras);
+                    cmd.Parameters.AddRange(sqlParameter);
                     r = cmd.ExecuteNonQuery();
                 }
                 catch (Exception e)
@@ -119,18 +142,23 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <summary>
         /// 执行SQL查询语句或者存储过程，返回DataSet
         /// </summary>
-        /// <param name="cmdTex">执行的命令或者存储过程的名称</param>
+        /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
         /// <returns>返回DataSet</returns>
-        public DataSet ExecuteDateSet(string cmdTex, CommandType cmdType)
+        public DataSet ExecuteDateSet(string cmdText, CommandType cmdType)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+
             DataSet ds = new DataSet();
             using (OracleConnection cn = new OracleConnection(conString))
             {
                 try
                 {
                     cn.Open();
-                    OracleDataAdapter da = new OracleDataAdapter(cmdTex, cn);
+                    OracleDataAdapter da = new OracleDataAdapter(cmdText, cn);
                     da.SelectCommand.CommandType = cmdType;
                     da.Fill(ds);
                 }
@@ -145,21 +173,38 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <summary>
         /// 执行带参数的SQL查询语句或者存储过程，返回DataSet
         /// </summary>
-        /// <param name="cmdTex">执行的命令或者存储过程的名称</param>
+        /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数)</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回DataSet</returns>
-        public DataSet ExecuteDateSet(string cmdTex, CommandType cmdType, OracleParameter[] paras)
+        public DataSet ExecuteDateSet(string cmdText, CommandType cmdType, Hashtable paras)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+            if (paras == null || paras.Count <= 0)
+            {
+                throw new ArgumentNullException("指定的参数paras为null或者没有有效的值。");
+            }
+
             DataSet ds = new DataSet();
             using (OracleConnection cn = new OracleConnection(conString))
             {
                 try
                 {
+                    OracleParameter[] sqlParameter = new OracleParameter[paras.Count];
+                    int i = 0;
+                    foreach (DictionaryEntry de in paras)
+                    {
+                        sqlParameter[i] = new OracleParameter(de.Key.ToString(), de.Value);
+                        i++;
+                    }
+
                     cn.Open();
-                    OracleDataAdapter da = new OracleDataAdapter(cmdTex, cn);
+                    OracleDataAdapter da = new OracleDataAdapter(cmdText, cn);
                     da.SelectCommand.CommandType = cmdType;
-                    da.SelectCommand.Parameters.AddRange(paras);
+                    da.SelectCommand.Parameters.AddRange(sqlParameter);
                     da.Fill(ds);
                 }
                 catch (Exception e)
@@ -176,8 +221,13 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
         /// <returns>返回OracleDatareader对象</returns>
-        public OracleDataReader ExecuteDataReader(string cmdText, CommandType cmdType)
+        public IDataReader ExecuteDataReader(string cmdText, CommandType cmdType)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+
             OracleDataReader dr = null;
             OracleConnection cn = new OracleConnection(conString);
             try
@@ -200,18 +250,35 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回OracleDatareader对象</returns>
-        public OracleDataReader ExecuteDataReader(string cmdText, CommandType cmdType, OracleParameter[] paras)
+        public IDataReader ExecuteDataReader(string cmdText, CommandType cmdType, Hashtable paras)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+            if (paras == null || paras.Count <= 0)
+            {
+                throw new ArgumentNullException("指定的参数paras为null或者没有有效的值。");
+            }
+
             OracleDataReader dr = null;
             OracleConnection cn = new OracleConnection(conString);
             try
             {
+                OracleParameter[] sqlParameter = new OracleParameter[paras.Count];
+                int i = 0;
+                foreach (DictionaryEntry de in paras)
+                {
+                    sqlParameter[i] = new OracleParameter(de.Key.ToString(), de.Value);
+                    i++;
+                }
+
                 cn.Open();
                 OracleCommand cmd = new OracleCommand(cmdText, cn);
                 cmd.CommandType = cmdType;
-                cmd.Parameters.AddRange(paras);
+                cmd.Parameters.AddRange(sqlParameter);
                 //CommandBehavior.CloseConnection暂时让OracleConnection对象不关闭，当OracleDataReader对象调用完毕也关闭的后才关闭连接
                 dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
@@ -230,6 +297,11 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <returns>返回object类型的字段变量</returns>
         public object ExecuteScalar(string cmdText, CommandType cmdType)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+
             object o;
             using (OracleConnection cn = new OracleConnection(conString))
             {
@@ -253,19 +325,36 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回object类型的字段变量</returns>
-        public object ExecuteScalar(string cmdText, CommandType cmdType, OracleParameter[] paras)
+        public object ExecuteScalar(string cmdText, CommandType cmdType, Hashtable paras)
         {
+            if (string.IsNullOrWhiteSpace(cmdText) == true)
+            {
+                throw new ArgumentNullException("指定的参数cmdText不合法或无效。");
+            }
+            if (paras == null || paras.Count <= 0)
+            {
+                throw new ArgumentNullException("指定的参数paras为null或者没有有效的值。");
+            }
+
             object o;
             using (OracleConnection cn = new OracleConnection(conString))
             {
                 try
                 {
+                    OracleParameter[] sqlParameter = new OracleParameter[paras.Count];
+                    int i = 0;
+                    foreach (DictionaryEntry de in paras)
+                    {
+                        sqlParameter[i] = new OracleParameter(de.Key.ToString(), de.Value);
+                        i++;
+                    }
+
                     cn.Open();
                     OracleCommand cmd = new OracleCommand(cmdText, cn);
                     cmd.CommandType = cmdType;
-                    cmd.Parameters.AddRange(paras);
+                    cmd.Parameters.AddRange(sqlParameter);
                     o = cmd.ExecuteScalar();
                 }
                 catch (Exception e)

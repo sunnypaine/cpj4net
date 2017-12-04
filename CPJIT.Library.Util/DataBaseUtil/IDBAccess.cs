@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -27,26 +28,26 @@ namespace CPJIT.Library.Util.DataBaseUtil
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数)</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>受影响的行数</returns>
-        int ExecuteNonQuery(string cmdText, CommandType cmdType, IDataParameter[] paras);
+        int ExecuteNonQuery(string cmdText, CommandType cmdType, Hashtable paras);
 
         /// <summary>
         /// 执行SQL查询语句或者存储过程，返回DataSet
         /// </summary>
-        /// <param name="cmdTex">执行的命令或者存储过程的名称</param>
+        /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
         /// <returns>返回DataSet</returns>
-        DataSet ExecuteDateSet(string cmdTex, CommandType cmdType);
+        DataSet ExecuteDateSet(string cmdText, CommandType cmdType);
 
         /// <summary>
         /// 执行带参数的SQL查询语句或者存储过程，返回DataSet
         /// </summary>
-        /// <param name="cmdTex">执行的命令或者存储过程的名称</param>
+        /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数)</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回DataSet</returns>
-        DataSet ExecuteDateSet(string cmdTex, CommandType cmdType, IDataParameter[] paras);
+        DataSet ExecuteDateSet(string cmdText, CommandType cmdType, Hashtable paras);
 
         /// <summary>
         /// 执行SQL查询语句或者存储过程，返回SqlDatareader对象
@@ -61,9 +62,9 @@ namespace CPJIT.Library.Util.DataBaseUtil
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回SqlDatareader对象</returns>
-        IDataReader ExecuteDataReader(string cmdText, CommandType cmdType, IDataParameter[] paras);
+        IDataReader ExecuteDataReader(string cmdText, CommandType cmdType, Hashtable paras);
 
         /// <summary>
         /// 执行查找字段的SQL查询语句或者存储过程，返回object类型的字段变量
@@ -78,8 +79,8 @@ namespace CPJIT.Library.Util.DataBaseUtil
         /// </summary>
         /// <param name="cmdText">执行的命令或者存储过程的名称</param>
         /// <param name="cmdType">执行的命令的类型（SQL语句或者存储过程）</param>
-        /// <param name="paras">数组参数类型(向该方法添加任意个参数</param>
+        /// <param name="paras">表示参数的键值对（键：参数名称；值：参数值）</param>
         /// <returns>返回object类型的字段变量</returns>
-        object ExecuteScalar(string cmdText, CommandType cmdType, IDataParameter[] paras);
+        object ExecuteScalar(string cmdText, CommandType cmdType, Hashtable paras);
     }
 }

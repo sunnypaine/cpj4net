@@ -37,6 +37,9 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\DLL\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\DLL\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\DLL\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
