@@ -2,6 +2,7 @@
 cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、实用的工具。为项目源码架构的工作提供便利，增强源码的复用，极大的减少代码的重复工作量。    
 因为处于某些原因，上次将本库从github删除，感谢之前支持并点赞的码友。从本次提交开始，后续将不停的对cpj4net进行更新。    
 
+
 ## 目录
 [`一. 更新说明`](#一-更新说明)    
 
@@ -12,17 +13,21 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 [`四. 其它`](#二-其它)
 
 ## 一. 更新说明
-1. 新增了WCFInvoker。
-2. 将数据库交互类接口化。
+1. 新增了WCFInvoker。（2017.11.29）
+2. 将数据库交互类接口化。（2017.12.04）
+3. 新增了ActivemqUtil。（2017.12.07）
 
 ## 引用组件
-工程中有一个dll文件夹，因为cpj4net中的有些工具类并非是原生工具，而是对一些工具类进行了二次封装。    
+工程中有一个dll文件夹，因为cpj4net中的有一些简单的工具类并非是原生工具，而是对一些工具类进行了二次封装。    
 需要引用的dll有：
 - ICSharpCode.SharpZipLib.dll
 - Ionic.Zip.dll
 - Oracle.ManagedDataAccess.dll
 - SQLite.Interop.dll
 - System.Data.SQLite.dll
+- Apache.NMS.ActiveMQ.dll
+- Apache.NMS.dll
+
 
 注意：cpj4net的Oracle数据库交互工具是依赖Oracle.ManagedDataAccess.dll，该dll不依赖Oracle客户端应用，但是执行效率相比依赖Oracle客户端的方式要低一点。使用该工具类的码友请根据实际运用场景的数据交互量决定。    
 
@@ -297,5 +302,135 @@ void Main()
 }
 ```
 
+### 8. ActivemqUtil
+`说明` 将NMS进行封装。提供程序作为ActiveMQ的消费者时实现消息路由机制；提供程序作为ActiveMQ的消息生产者时，更方面的发送消息。此工具可使用IOC框架完成消息路由，完美契合，非常方便。    
+
+`使用示例-常规使用`
+```
+//该示例在解决方案中的Test工程中一斤更有示例了。详细的可以查看demo。
+class Program
+{
+    void Main()
+    {
+        activemqClient = new ActivemqClient("failover:tcp://192.168.0.1:61616", "admin", "admin");
+
+        IMessageManager messageManager1 = new CPJ.Test.TestMessageProcess1(activemqClient);
+        IMessageManager messageManager2 = new CPJ.Test.TestMessageProcess2(activemqClient);
+
+        activemqClient.Connect();
+
+        messageManager1.SubscribeDestination();//TestMessageProcess1订阅并接收消息
+        messageManager2.SubscribeDestination();//TestMessageProcess2订阅并接收消息
+    }
+}
+
+class TestMessageProcess1 : AbstractMessageManager
+{
+    public TestMessageProcess1(IActivemqClient mqclient) : base(mqclient)
+    {
+        base.DestinationName = "Topic.Test1";
+        base.DestinationType = DestinationType.Topic;
+        base.IsSubscibe = true;
+    }
+
+    protected override void ReciverMessage(object sender, DataEventArgs e)
+    {
+        if (e == null)
+        {
+            return;
+        }
+        Console.WriteLine("接收到消息：" + e.Text);
+    }
+}
+
+class TestMessageProcess2 : AbstractMessageManager
+{
+    public TestMessageProcess(IActivemqClient mqclient) : base(mqclient)
+    {
+        base.DestinationName = "Topic.Test2";
+        base.DestinationType = DestinationType.Topic;
+        base.IsSubscibe = true;
+    }
+
+    protected override void ReciverMessage(object sender, DataEventArgs e)
+    {
+        if (e == null)
+        {
+            return;
+        }
+        Console.WriteLine("接收到消息：" + e.Text);
+    }
+}
+```
+`使用示例-IOC容器使用`
+```
+///IOC容器举例以Microsoft.Practice.Unity为例
+class Program
+{
+    private IUnityContainer container;//Unity容器的实例化自行完成，此demo不做演示。
+    void Main()
+    {
+        //以下三行代码可以通过Unity.config配置文件配置
+        this.container.RegisterType<IActivemqClient, ActivemqClient>(); 
+        this.container.RegisterType<IMessageManager, TestMessageProcess1>("TestMessageProcess1");
+        this.container.RegisterType<IMessageManager, TestMessageProcess2>("TestMessageProcess2");
+
+        var activemqClient = this.container.Resolve<IActivemqClient>();
+        activemqClient.BrokerUri = "failover:tcp://192.168.0.1:61616";
+        activemqClient.UserName = "admin";
+        activemqClient.Password = "admin";
+        activemqClient.Connect();
+        
+        //初始化所有消息路由
+        var listMessageManager = this.container.ResolveAll<IMessageManager>();
+        foreach (var messageManager in listMessageManager)
+        {
+            messageManager.SubscribeDestination();
+        }
+    }
+}
+
+
+class TestMessageProcess1 : AbstractMessageManager
+{
+    public TestMessageProcess1(IActivemqClient mqclient) : base(mqclient)
+    {
+        base.DestinationName = "Topic.Test1";
+        base.DestinationType = DestinationType.Topic;
+        base.IsSubscibe = true;
+    }
+
+    protected override void ReciverMessage(object sender, DataEventArgs e)
+    {
+        if (e == null)
+        {
+            return;
+        }
+        Console.WriteLine("接收到消息：" + e.Text);
+    }
+}
+
+class TestMessageProcess2 : AbstractMessageManager
+{
+    public TestMessageProcess(IActivemqClient mqclient) : base(mqclient)
+    {
+        base.DestinationName = "Topic.Test2";
+        base.DestinationType = DestinationType.Topic;
+        base.IsSubscibe = true;
+    }
+
+    protected override void ReciverMessage(object sender, DataEventArgs e)
+    {
+        if (e == null)
+        {
+            return;
+        }
+        Console.WriteLine("接收到消息：" + e.Text);
+    }
+}
+```
+
+
 ## 四. 其它
-欢迎各位码友提出宝贵的意见。大恩不言谢。
+1. 欢迎各位码友提出宝贵的意见。大恩不言谢。    
+2. 我在码云上面也看到有很多同类型的工具封装，不同的是着重的方向不同，工具的源码实现方式不同等。其中有一个大神（我真心认为他是大神），封装了非常非常非常多好用的、强大的工具，这一方面我很佩服，但是他说“如果你发现了网上类似的项目，说明你遇到了个装逼的”。大家都有学习、自己研究的自由，而且有共享精神，我个人认为都是值得褒奖、值得鼓励、值得大家一起奋斗学习的，什么叫“装逼的”，别太自负，我们这些菜逼臭皮匠，组成起来也能干掉诸葛亮。（仅代表我个人观点，绝不包含任何攻击意思）
