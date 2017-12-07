@@ -23,7 +23,7 @@ namespace CPJIT.Library.Util.XmlUtil
     /// <summary>
     /// XML工具
     /// </summary>
-    public class XmlDocumentUtil
+    public sealed class XmlDocumentUtil
     {
         private XmlDocument xmlDoc;
 
@@ -94,7 +94,7 @@ namespace CPJIT.Library.Util.XmlUtil
         /// </summary>
         /// <param name="xpath"></param>
         /// <returns></returns>
-        public List<NodeInfo> FindNodes(string xpath)
+        public IList<NodeInfo> FindNodes(string xpath)
         {
             List<NodeInfo> infos = null;
             try

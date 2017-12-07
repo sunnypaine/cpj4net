@@ -1,4 +1,6 @@
-﻿using CPJIT.Library.Util.DataBaseUtil;
+﻿using CPJIT.Library.Util.ActivemqUtil;
+using CPJIT.Library.Util.ActivemqUtil.Impl;
+using CPJIT.Library.Util.DataBaseUtil;
 using CPJIT.Library.Util.DataBaseUtil.Impl;
 using CPJIT.Library.Util.SocketUtil;
 using CPJIT.Library.Util.WebServiceUtil;
@@ -17,18 +19,26 @@ namespace CPJIT.Library.Test
 {
     public partial class Form1 : Form
     {
+        #region 私有变量
+        IActivemqClient activemqClient;
+        #endregion
+
+
+
         public Form1()
         {
             InitializeComponent();
+
+            this.FormClosing += this.Form1_FormClosing;
         }
 
         #region 本地事件
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             WebServiceInvoker invoker = new WebServiceInvoker();
             invoker.WebServiceUrl = "http://www.webxml.com.cn/WebServices/WeatherWebService.asmx";
@@ -44,7 +54,7 @@ namespace CPJIT.Library.Test
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             IDBAccess dBAccess = new SQLiteHelper(@"test.db3");
             string cmdText = "select * from t_user where user_name=@UserName";
@@ -61,7 +71,7 @@ namespace CPJIT.Library.Test
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button4_Click(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
             IDBAccess dBAccess = new MySQLHelper("192.168.0.1", 3306, "blog", "root", "root");
             string cmdText = "select * from t_user where user_name=@UserName and user_password=@Password";
@@ -72,6 +82,43 @@ namespace CPJIT.Library.Test
             DataTable dt = ds.Tables[0];
             MessageBox.Show(dt.Rows[0]["user_name"].ToString() + ","
                 + dt.Rows[0]["user_password"].ToString());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// ActiveMQ测试
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button7_Click(object sender, EventArgs e)
+        {
+            activemqClient = new ActivemqClient("failover:tcp://192.168.0.1:61616", "admin", "admin");
+            IMessageManager messageManager = new CPJ.Test.TestMessageProcess(activemqClient);
+            activemqClient.Connect();
+            messageManager.SubscribeDestination();
+        }
+
+        /// <summary>
+        /// 窗体关闭前发生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.activemqClient != null)
+            {
+                this.activemqClient.Close();
+                this.activemqClient = null;
+            }
         }
         #endregion
     }

@@ -34,6 +34,12 @@
     <DocumentationFile>bin\Release\CPJIT.Library.Util.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apache.NMS">
+      <HintPath>..\DLL\Apache.NMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS.ActiveMQ">
+      <HintPath>..\DLL\Apache.NMS.ActiveMQ.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\DLL\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -59,6 +65,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivemqUtil\IMessageManager.cs" />
+    <Compile Include="ActivemqUtil\Impl\AbstractMessageManager.cs" />
+    <Compile Include="ActivemqUtil\Model\DataEventArgs.cs" />
+    <Compile Include="ActivemqUtil\Enum\DestinationType.cs" />
+    <Compile Include="ActivemqUtil\Model\ExceptionArgs.cs" />
+    <Compile Include="ActivemqUtil\IActivemqClient.cs" />
+    <Compile Include="ActivemqUtil\Impl\ActivemqClient.cs" />
+    <Compile Include="ActivemqUtil\Model\StatusEventArgs.cs" />
     <Compile Include="CommonUtil\DateTimeUtil.cs" />
     <Compile Include="CommonUtil\DelegateUtil.cs" />
     <Compile Include="CommonUtil\StringUtil.cs" />
