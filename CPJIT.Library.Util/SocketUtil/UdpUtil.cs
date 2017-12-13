@@ -129,7 +129,10 @@ namespace CPJIT.Library.Util.SocketUtil
                     args.Bytes = this.buffer;
                     args.Data = Encoding.Default.GetString(this.buffer, 0, bytesRead);
                     args.RemoteIpEndPoint = tmpEPRemote;
-                    this.OnReceiver?.Invoke(args);
+                    if (this.OnReceiver != null)
+                    {
+                        this.OnReceiver(args);
+                    }
                 }
                 catch (Exception ex)
                 {

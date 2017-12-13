@@ -184,7 +184,10 @@ namespace CPJIT.Library.Util.SocketUtil
                             this.TcpClients.Add(ipport, session);
                             this.currentClient = this.TcpClients.Count;
 
-                            this.OnConnected?.Invoke(session);
+                            if (this.OnConnected != null)
+                            {
+                                this.OnConnected(session);
+                            }
                         }
                     }
                     //开始接收来自客户端的数据
@@ -214,7 +217,10 @@ namespace CPJIT.Library.Util.SocketUtil
                     if (receiveCount == 0)
                     {
                         this.CloseSession(session);
-                        this.OnDisconnected?.Invoke(session);
+                        if (this.OnDisconnected != null)
+                        {
+                            this.OnDisconnected(session);
+                        }
                     }
                     else if (receiveCount > 0)
                     {
@@ -232,7 +238,10 @@ namespace CPJIT.Library.Util.SocketUtil
                         }
                         else
                         {
-                            this.OnReceived?.Invoke(session);
+                            if (this.OnReceived != null)
+                            {
+                                this.OnReceived(session);
+                            }
                             session.Data = new byte[client.ReceiveBufferSize];
                             session.Message = new StringBuilder();
                             //继续接收来自客户端的消息
@@ -243,7 +252,10 @@ namespace CPJIT.Library.Util.SocketUtil
                 }
                 catch (Exception ex)
                 {
-                    this.OnServerException?.Invoke(session, new Exception("处理接收的消息出错", ex));
+                    if (this.OnServerException != null)
+                    {
+                        this.OnServerException(session, new Exception("处理接收的消息出错", ex));
+                    }
                 }
             }
         }

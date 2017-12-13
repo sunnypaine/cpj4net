@@ -2,17 +2,10 @@
 using CPJIT.Library.Util.ActivemqUtil.Impl;
 using CPJIT.Library.Util.DataBaseUtil;
 using CPJIT.Library.Util.DataBaseUtil.Impl;
-using CPJIT.Library.Util.SocketUtil;
 using CPJIT.Library.Util.WebServiceUtil;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CPJIT.Library.Test
@@ -28,7 +21,6 @@ namespace CPJIT.Library.Test
         public Form1()
         {
             InitializeComponent();
-
             this.FormClosing += this.Form1_FormClosing;
         }
 
@@ -92,6 +84,15 @@ namespace CPJIT.Library.Test
         private void Button5_Click(object sender, EventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// 测试Oracle数据库
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button6_Click(object sender, EventArgs e)
+        {
         }
 
         /// <summary>

@@ -126,7 +126,10 @@ namespace CPJIT.Library.Util.SocketUtil
                 socket.EndConnect(iar);
 
                 //触发与服务端连接成功的委托
-                this.OnConnected?.Invoke();
+                if (this.OnConnected != null)
+                {
+                    this.OnConnected();
+                }
 
                 //开始接收数据
                 byte[] buffer = new byte[this.socketClient.ReceiveBufferSize];
@@ -136,7 +139,10 @@ namespace CPJIT.Library.Util.SocketUtil
             catch (Exception ex)
             {
                 //触发连接服务端出错的委托
-                this.OnException?.Invoke(new Exception("连接服务端出错", ex));
+                if (this.OnException != null)
+                {
+                    this.OnException(new Exception("连接服务端出错", ex));
+                }
             }
         }
 
@@ -152,7 +158,10 @@ namespace CPJIT.Library.Util.SocketUtil
                 if (receiveCount == 0)
                 {
                     this.socketClient = null;
-                    this.OnDisconnected?.Invoke();
+                    if (this.OnDisconnected != null)
+                    {
+                        this.OnDisconnected();
+                    }
                 }
                 else
                 {
@@ -166,7 +175,10 @@ namespace CPJIT.Library.Util.SocketUtil
                         Data = this.Encoding.GetString(receiveData),
                         RemoteIpEndPoint = new IPEndPoint(this.ServerIpAddress, this.ServerPort)
                     };
-                    this.OnReceived?.Invoke(args);
+                    if (this.OnReceived != null)
+                    {
+                        this.OnReceived(args);
+                    }
 
                     if (this.socketClient != null && this.socketClient.Connected == true)
                     {
@@ -260,7 +272,10 @@ namespace CPJIT.Library.Util.SocketUtil
                     this.socketClient.Close();
                     this.IsConnect = false;
                     //触发与服务端断开的委托
-                    this.OnDisconnected?.Invoke();
+                    if (this.OnDisconnected != null)
+                    {
+                        this.OnDisconnected();
+                    }
                 }
             }
 
