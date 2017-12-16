@@ -18,7 +18,7 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 3. 新增了ActivemqUtil。（2017.12.07）
 4. 去掉了某些小于vs2017版本无法编译的语法糖。    
 包装win32 API，录制普通音质音频的工具。（2017.12.13）
-5. 解决TCPClientUtil和TcpServerUtil接收数据粘包的问题。
+5. 解决TCPClientUtil和TcpServerUtil接收数据粘包的问题。（2017.12.16）
 
 ## 引用组件
 工程中有一个dll文件夹，因为cpj4net中的有一些简单的工具类并非是原生工具，而是对一些工具类进行了二次封装。    
