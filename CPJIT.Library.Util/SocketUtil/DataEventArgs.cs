@@ -10,7 +10,7 @@ namespace CPJIT.Library.Util.SocketUtil
     /// <summary>
     /// 表示远程端UDP信息
     /// </summary>
-    public class DataArgs
+    public class DataEventArgs : EventArgs
     {
         /// <summary>
         /// 接收到的数据
@@ -20,7 +20,17 @@ namespace CPJIT.Library.Util.SocketUtil
         /// <summary>
         /// 接收到的数据
         /// </summary>
-        public string Data { get; set; }
+        public StringBuilder Message { get; set; }
+
+        /// <summary>
+        /// 远端IP地址
+        /// </summary>
+        public string RemoteIP { get; set; }
+
+        /// <summary>
+        /// 远端端口
+        /// </summary>
+        public int RemotePort { get; set; }
 
         /// <summary>
         /// 远程端IP与端口

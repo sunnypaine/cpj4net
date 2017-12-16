@@ -66,11 +66,10 @@ namespace CPJIT.Library.Util.SocketUtil
 
 
         #region 事件委托
-        public delegate void ReceiveHandler(DataArgs args);
         /// <summary>
         /// 当收到消息时发生
         /// </summary>
-        public event ReceiveHandler OnReceiver;
+        public event EventHandler<DataEventArgs> OnReceiver;
         #endregion
 
 
@@ -125,13 +124,15 @@ namespace CPJIT.Library.Util.SocketUtil
                     {
                         this.Send(this.ReplyContent, tmpEPRemote);
                     }
-                    DataArgs args = new DataArgs();
+                    DataEventArgs args = new DataEventArgs();
                     args.Bytes = this.buffer;
-                    args.Data = Encoding.Default.GetString(this.buffer, 0, bytesRead);
+                    args.Message = new StringBuilder(Encoding.Default.GetString(this.buffer, 0, bytesRead));
+                    args.RemoteIP = ipep.Address.ToString();
+                    args.RemotePort = ipep.Port;
                     args.RemoteIpEndPoint = tmpEPRemote;
                     if (this.OnReceiver != null)
                     {
-                        this.OnReceiver(args);
+                        this.OnReceiver(this, args);
                     }
                 }
                 catch (Exception ex)

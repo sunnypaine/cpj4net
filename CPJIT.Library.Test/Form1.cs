@@ -2,6 +2,7 @@
 using CPJIT.Library.Util.ActivemqUtil.Impl;
 using CPJIT.Library.Util.DataBaseUtil;
 using CPJIT.Library.Util.DataBaseUtil.Impl;
+using CPJIT.Library.Util.SocketUtil;
 using CPJIT.Library.Util.WebServiceUtil;
 using System;
 using System.Collections;
@@ -14,6 +15,8 @@ namespace CPJIT.Library.Test
     {
         #region 私有变量
         IActivemqClient activemqClient;
+
+        TcpClientUtil client;
         #endregion
 
 
@@ -22,6 +25,22 @@ namespace CPJIT.Library.Test
         {
             InitializeComponent();
             this.FormClosing += this.Form1_FormClosing;
+            
+
+            this.client = new TcpClientUtil("192.168.1.100", 60000);
+            this.client.Terminator = "^^end^^";
+            this.client.OnReceived += this.Client_OnReceived;
+            this.client.Connect();
+        }
+
+        private void Client_OnReceived(object sender, DataEventArgs e)
+        {
+            Util.CommonUtil.DelegateUtil.UIHelper(this.richTextBox1, () =>
+            {
+                this.richTextBox1.AppendText(e.Message.ToString() 
+                    + Environment.NewLine 
+                    + Environment.NewLine);
+            });
         }
 
         #region 本地事件

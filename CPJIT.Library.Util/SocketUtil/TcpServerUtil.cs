@@ -43,6 +43,11 @@ namespace CPJIT.Library.Util.SocketUtil
         /// 服务端的Socket对象
         /// </summary>
         private Socket socetServer;
+
+        /// <summary>
+        /// 消息缓冲区大小
+        /// </summary>
+        private readonly int bufferSize = 1024;
         #endregion
 
 
@@ -76,29 +81,37 @@ namespace CPJIT.Library.Util.SocketUtil
         /// 通讯使用的编码（默认使用Default）
         /// </summary>
         public Encoding Encoding { get; set; }
+
+        /// <summary>
+        /// 表示消息的终止符。避免消息粘连。
+        /// </summary>
+        public string Terminator { get; set; }
         #endregion
 
 
         #region 事件委托
-        public delegate void ReceivedHandler(Session session);
         /// <summary>
         /// 接收到来自客户端的消息时发生
         /// </summary>
-        public event ReceivedHandler OnReceived;
+        public event EventHandler<SessionEventArgs> OnReceived;
 
-        public delegate void ConnectedHandler(Session session);
         /// <summary>
         /// 当有客户端连上服务端时发生
         /// </summary>
-        public event ConnectedHandler OnConnected;
+        public event EventHandler<SessionEventArgs> OnConnected;
 
-        public delegate void DisconnectedHandler(Session session);
         /// <summary>
         /// 当有客户端与服务端断开连接时发生
         /// </summary>
-        public event DisconnectedHandler OnDisconnected;
+        public event EventHandler<SessionEventArgs> OnDisconnected;
 
-        public delegate void ServerExceptionHandler(Session session, Exception ex);
+        /// <summary>
+        /// 表示当服务端发生异常时将处理该事件的方法
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="session"></param>
+        /// <param name="ex"></param>
+        public delegate void ServerExceptionHandler(object sender, SessionEventArgs session, Exception ex);
         /// <summary>
         /// 当服务端出现异常时发生
         /// </summary>
@@ -158,18 +171,18 @@ namespace CPJIT.Library.Util.SocketUtil
         /// <summary>
         /// 异步接收客户端连接
         /// </summary>
-        /// <param name="listner"></param>
+        /// <param name="iar"></param>
         private void AcceptTcpClientCallback(IAsyncResult iar)
         {
             if (this.isRun == true)
             {
                 Socket server = iar.AsyncState as Socket;
                 Socket client = server.EndAccept(iar);
-                Session session = new Session(client);
+                SessionEventArgs session = new SessionEventArgs(client);
 
                 if (this.TcpClients.Count >= this.maxClient)
                 {
-                    this.OnServerException(session, new IndexOutOfRangeException("服务端超出最大客户端连接数"));
+                    this.OnServerException(this, session, new IndexOutOfRangeException("服务端超出最大客户端连接数"));
                 }
                 else
                 {
@@ -177,6 +190,8 @@ namespace CPJIT.Library.Util.SocketUtil
                     {
                         IPEndPoint iep = (IPEndPoint)session.SocketClient.RemoteEndPoint;
                         string ipport = iep.Address.ToString() + ":" + iep.Port;
+                        session.IP = iep.Address.ToString();
+                        session.Port = iep.Port;
                         session.IpPort = ipport;
                         session.Message = new StringBuilder();
                         if (this.TcpClients.ContainsKey(ipport) == false)
@@ -186,13 +201,13 @@ namespace CPJIT.Library.Util.SocketUtil
 
                             if (this.OnConnected != null)
                             {
-                                this.OnConnected(session);
+                                this.OnConnected(this, session);
                             }
                         }
                     }
                     //开始接收来自客户端的数据
-                    session.Data = new byte[client.ReceiveBufferSize];
-                    client.BeginReceive(session.Data, 0, session.Data.Length, SocketFlags.None,
+                    session.Bytes = new byte[this.bufferSize];
+                    client.BeginReceive(session.Bytes, 0, session.Bytes.Length, SocketFlags.None,
                         new AsyncCallback(ReceiveMessageCallback), session);
                 }
                 //继续接收下一个客户端请求
@@ -208,44 +223,88 @@ namespace CPJIT.Library.Util.SocketUtil
         {
             if (this.isRun == true)
             {
-                Session session = iar.AsyncState as Session;
+                SessionEventArgs session = iar.AsyncState as SessionEventArgs;
                 Socket client = session.SocketClient;
 
                 try
                 {
                     int receiveCount = client.EndReceive(iar);
-                    if (receiveCount == 0)
+                    if (receiveCount == 0)//表示客户端已经断开连接
                     {
                         this.CloseSession(session);
                         if (this.OnDisconnected != null)
                         {
-                            this.OnDisconnected(session);
+                            this.OnDisconnected(this, session);
                         }
                     }
-                    else if (receiveCount > 0)
+                    else if (receiveCount > 0)//表示客户端连接正常
                     {
-                        string tmp = this.Encoding.GetString(session.Data, 0, receiveCount);
-                        session.Message.Append(tmp);
-                        if (client.Available > 0)
+                        string tmpMsg = this.Encoding.GetString(session.Bytes, 0, receiveCount);
+                        if (client.Available > 0)//表示消息还没有接收完。没有接受完的消息可能是正常消息余下的，也有可能是第二条粘连的消息余下的。
                         {
+                            session.Message.Append(tmpMsg);
                             if (client != null && client.Connected == true)
                             {
-                                session.Data = new byte[client.ReceiveBufferSize];
+                                session.Bytes = new byte[this.bufferSize];
                                 //继续接收来自客户端的消息
-                                client.BeginReceive(session.Data, 0, session.Data.Length, SocketFlags.None,
+                                client.BeginReceive(session.Bytes, 0, session.Bytes.Length, SocketFlags.None,
                                     new AsyncCallback(ReceiveMessageCallback), session);
                             }
                         }
-                        else
+                        else//表示消息已经接受完成。接收完成的消息可能包含粘连消息
                         {
-                            if (this.OnReceived != null)
+                            session.Message.Append(tmpMsg);
+                            string message = session.Message.ToString();
+
+                            if (string.IsNullOrWhiteSpace(this.Terminator))//如果没有设置消息内容终止符
                             {
-                                this.OnReceived(session);
+                                byte[] bytes = this.Encoding.GetBytes(message);
+                                if (this.OnReceived != null)
+                                {
+                                    this.OnReceived(this, new SessionEventArgs(session.SocketClient)
+                                    {
+                                        IP = session.IP,
+                                        Port = session.Port,
+                                        IpPort = session.IpPort,
+                                        Bytes = bytes,
+                                        Message = session.Message
+                                    });
+                                }
                             }
-                            session.Data = new byte[client.ReceiveBufferSize];
+                            else
+                            {
+                                //判断消息是否粘连
+                                if (tmpMsg.Contains(this.Terminator))
+                                {
+                                    string[] splitTmp = tmpMsg.Split(new string[] { this.Terminator }, StringSplitOptions.None);
+                                    foreach (string item in splitTmp)
+                                    {
+                                        if (string.IsNullOrEmpty(item) == true)
+                                        {
+                                            continue;
+                                        }
+
+                                        if (this.OnReceived != null)
+                                        {
+                                            byte[] bytes = this.Encoding.GetBytes(item);
+                                            this.OnReceived(this, new SessionEventArgs(session.SocketClient)
+                                            {
+                                                IP = session.IP,
+                                                Port = session.Port,
+                                                IpPort = session.IpPort,
+                                                Bytes = bytes,
+                                                Message = new StringBuilder(message + this.Terminator)
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+
+
+                            session.Bytes = new byte[this.bufferSize];
                             session.Message = new StringBuilder();
                             //继续接收来自客户端的消息
-                            client.BeginReceive(session.Data, 0, session.Data.Length, SocketFlags.None,
+                            client.BeginReceive(session.Bytes, 0, session.Bytes.Length, SocketFlags.None,
                                 new AsyncCallback(ReceiveMessageCallback), session);
                         }
                     }
@@ -254,7 +313,7 @@ namespace CPJIT.Library.Util.SocketUtil
                 {
                     if (this.OnServerException != null)
                     {
-                        this.OnServerException(session, new Exception("处理接收的消息出错", ex));
+                        this.OnServerException(this, session, new Exception("处理接收的消息出错", ex));
                     }
                 }
             }
@@ -277,12 +336,12 @@ namespace CPJIT.Library.Util.SocketUtil
         /// 释放客户端会话
         /// </summary>
         /// <param name="session"></param>
-        private void CloseSession(Session session)
+        private void CloseSession(SessionEventArgs session)
         {
             if (session != null)
             {
                 session.Message = null;
-                session.Data = null;
+                session.Bytes = null;
 
                 this.TcpClients.Remove(session.IpPort);
                 this.currentClient = this.TcpClients.Count;
@@ -347,8 +406,33 @@ namespace CPJIT.Library.Util.SocketUtil
         /// <param name="message"></param>
         public void Send(Socket socket, string message)
         {
-            byte[] bytes = this.Encoding.GetBytes(message);
-            Send(socket, bytes);
+            try
+            {
+                byte[] bytes = null;
+                if (string.IsNullOrWhiteSpace(this.Terminator) == false)//如果设置了消息终止符
+                {
+                    if (message.Contains(this.Terminator) == true)//如果消息里包含消息终止符
+                    {
+                        bytes = this.Encoding.GetBytes(message);
+                    }
+                    else//如果消息里不包含消息终止符
+                    {
+                        bytes = this.Encoding.GetBytes(message + this.Terminator);
+                    }
+                }
+                else
+                {
+                    bytes = this.Encoding.GetBytes(message);
+                }
+                Send(socket, bytes);
+            }
+            catch (Exception ex)
+            {
+                if (this.OnServerException != null)
+                {
+                    this.OnServerException(this, new SessionEventArgs(socket), new Exception("处理接收的消息出错", ex));
+                }
+            }
         }
 
         /// <summary>
@@ -377,7 +461,7 @@ namespace CPJIT.Library.Util.SocketUtil
         {
             foreach (DictionaryEntry de in this.TcpClients)
             {
-                Session session = de.Value as Session;
+                SessionEventArgs session = de.Value as SessionEventArgs;
                 this.CloseSession(session);
             }
             this.currentClient = 0;

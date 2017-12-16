@@ -90,8 +90,8 @@
     <Compile Include="SecurityUtil\RC2Util.cs" />
     <Compile Include="SerializeUtil\JsonSeializeUtil.cs" />
     <Compile Include="SerializeUtil\XmlSerializeUtil.cs" />
-    <Compile Include="SocketUtil\DataArgs.cs" />
-    <Compile Include="SocketUtil\Session.cs" />
+    <Compile Include="SocketUtil\DataEventArgs.cs" />
+    <Compile Include="SocketUtil\SessionEventArgs.cs" />
     <Compile Include="SocketUtil\TcpClientUtil.cs" />
     <Compile Include="SocketUtil\TcpServerUtil.cs" />
     <Compile Include="SocketUtil\UdpUtil.cs" />

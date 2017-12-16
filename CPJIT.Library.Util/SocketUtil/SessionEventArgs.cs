@@ -10,9 +10,19 @@ namespace CPJIT.Library.Util.SocketUtil
     /// <summary>
     /// 表示与服务端之间的客户端会话
     /// </summary>
-    public class Session
+    public class SessionEventArgs : EventArgs
     {
         #region 公共属性
+        /// <summary>
+        /// 客户端的IP地址
+        /// </summary>
+        public string IP { get; set; }
+
+        /// <summary>
+        /// 客户端的端口
+        /// </summary>
+        public int Port { get; set; }
+
         /// <summary>
         /// 客户端的IP和端口
         /// </summary>
@@ -21,7 +31,7 @@ namespace CPJIT.Library.Util.SocketUtil
         /// <summary>
         /// 接收的数据
         /// </summary>
-        public byte[] Data { get; set; }
+        public byte[] Bytes { get; set; }
 
         /// <summary>
         /// 接收的数据
@@ -40,7 +50,7 @@ namespace CPJIT.Library.Util.SocketUtil
         /// 使用指定的socket对象实例化对象
         /// </summary>
         /// <param name="socketCliet"></param>
-        public Session(Socket socketCliet)
+        public SessionEventArgs(Socket socketCliet)
         {
             this.SocketClient = socketCliet;
         }
