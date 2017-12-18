@@ -14,7 +14,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CPJIT.Library.Util.SerializeUtil
+namespace CPJIT.Library.Util.JsonUtil
 {
     /// <summary>
     /// Json序列化工具

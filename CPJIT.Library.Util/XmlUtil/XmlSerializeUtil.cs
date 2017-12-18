@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace CPJIT.Library.Util.SerializeUtil
+namespace CPJIT.Library.Util.XmlUtil
 {
     /// <summary>
     /// Xml序列化工具

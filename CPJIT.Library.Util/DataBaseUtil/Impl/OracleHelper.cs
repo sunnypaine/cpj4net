@@ -30,10 +30,15 @@ namespace CPJIT.Library.Util.DataBaseUtil.Impl
         /// <summary>
         /// 构造方法
         /// </summary>
-        public OracleHelper(string ip, string serviceName, string userId, string password)
+        /// <param name="ip">ip地址</param>
+        /// <param name="port">端口</param>
+        /// <param name="serviceName">数据库服务名</param>
+        /// <param name="userId">用户名</param>
+        /// <param name="password">密码</param>
+        public OracleHelper(string ip, int port, string serviceName, string userId, string password)
         {
-            conString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT=1521))(CONNECT_DATA=(SERVICE_NAME={1})));Persist Security Info=True;User ID={2};Password={3};",
-                ip, serviceName, userId, password);
+            conString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));Persist Security Info=True;User ID={3};Password={4};",
+                ip, port, serviceName, userId, password);
         }
 
         /// <summary>

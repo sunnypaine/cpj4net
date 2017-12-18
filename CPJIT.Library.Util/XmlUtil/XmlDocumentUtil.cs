@@ -6,7 +6,6 @@
  * 描述说明： 
  * *******************************************************/
 
-using CPJIT.Library.Util.SerializeUtil;
 using CPJIT.Library.Util.XmlUtil.Model;
 using System;
 using System.Collections;
