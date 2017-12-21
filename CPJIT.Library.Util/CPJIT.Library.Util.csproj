@@ -106,8 +106,7 @@
     <Compile Include="WCFUtil\Services\ServiceInvoker.cs" />
     <Compile Include="WCFUtil\WcfInvoker.cs" />
     <Compile Include="WebServiceUtil\WebServiceInvoker.cs" />
-    <Compile Include="XmlUtil\Model\NodeInfo.cs" />
-    <Compile Include="XmlUtil\XmlDocumentUtil.cs" />
+    <Compile Include="XmlUtil\XmlUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SystemUtil\" />

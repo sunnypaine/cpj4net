@@ -13,15 +13,16 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 [`四. 其它`](#二-其它)
 
 ## 一. 更新说明
-1. 新增了WCFInvoker。（2017.11.29）
-2. 将数据库交互类接口化。（2017.12.04）
-3. 新增了ActivemqUtil。（2017.12.07）
+1. 新增了WCFInvoker。[1.0.2017.1129]
+2. 将数据库交互类接口化。[1.0.2017.1204]
+3. 新增了ActivemqUtil。[1.0.2017.1207]
 4. 去掉了某些小于vs2017版本无法编译的语法糖。    
-包装win32 API，录制普通音质音频的工具。（2017.12.13）
-5. 解决TCPClientUtil和TcpServerUtil接收数据粘包的问题。（2017.12.16）
-6. 引入Newtonsoft.Json.dll，封装json格式化工具和字符串是否为json的校验工具。（2017.12.18）
+包装win32 API，录制普通音质音频的工具。[1.0.2017.1213]
+5. 解决TCPClientUtil和TcpServerUtil接收数据粘包的问题。[1.0.2017.1216]
+6. 引入Newtonsoft.Json.dll，封装json格式化工具和字符串是否为json的校验工具。[1.0.2017.1218]
+7. 更新xml工具。遗弃之前的XmlDocumentUtil工具类，更名为XmlUtil，基于更轻更便捷的Linq to xml，即XDocument。[1.0.2017.1221]
 
-## 引用组件
+## 二. 引用组件
 工程中有一个dll文件夹，因为cpj4net中的有一些简单的工具类并非是原生工具，而是对一些工具类进行了二次封装。    
 需要引用的dll有：
 - ICSharpCode.SharpZipLib.dll
@@ -35,7 +36,7 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 
 注意：cpj4net的Oracle数据库交互工具是依赖Oracle.ManagedDataAccess.dll，该dll不依赖Oracle客户端应用，但是执行效率相比依赖Oracle客户端的方式要低一点。使用该工具类的码友请根据实际运用场景的数据交互量决定。    
 
-## 主要工具类说明
+## 三. 主要工具类说明
 ### 1. IniUtil.cs
 #### 1.1 public static void WriteINI(string section, string key, string value, string path)
 `说明`  写入ini配置信息。如果配置文件的section不存在将添加，如果存在，将修改或添加key&value。    
