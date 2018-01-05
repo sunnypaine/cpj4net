@@ -1,0 +1,17 @@
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\CPJIT.Library.Util.xml
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\CPJIT.Library.Util.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\CPJIT.Library.Util.pdb
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\Apache.NMS.ActiveMQ.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\Apache.NMS.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\ICSharpCode.SharpZipLib.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\MySql.Data.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\Oracle.ManagedDataAccess.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\System.Data.SQLite.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\Apache.NMS.xml
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\Apache.NMS.ActiveMQ.xml
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\obj\Release\CPJIT.Library.Util.csproj.CoreCompileInputs.cache
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\obj\Release\CPJIT.Library.Util.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\obj\Release\CPJIT.Library.Util.pdb
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\Newtonsoft.Json.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\bin\Release\Newtonsoft.Json.xml
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.Util\obj\Release\CPJIT.Library.Util.csprojResolveAssemblyReference.cache

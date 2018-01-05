@@ -1,0 +1,9 @@
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\bin\Release\CPJIT.Util.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\bin\Release\CPJIT.Util.pdb
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\bin\Release\ICSharpCode.SharpZipLib.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\bin\Release\Oracle.ManagedDataAccess.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\bin\Release\System.Data.SQLite.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\obj\Release\CPJIT.Util.csprojResolveAssemblyReference.cache
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\obj\Release\CPJIT.Util.dll
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\obj\Release\CPJIT.Util.pdb
+D:\SunnyPaine\Programmer\DotNET C#\CPJ.Library\CPJ.Util\bin\Release\CPJIT.Util.xml

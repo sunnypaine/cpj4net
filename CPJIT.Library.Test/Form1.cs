@@ -1,9 +1,12 @@
-﻿using CPJIT.Library.Util.ActivemqUtil;
-using CPJIT.Library.Util.ActivemqUtil.Impl;
-using CPJIT.Library.Util.DataBaseUtil;
-using CPJIT.Library.Util.DataBaseUtil.Impl;
-using CPJIT.Library.Util.SocketUtil;
-using CPJIT.Library.Util.WebServiceUtil;
+﻿using CPJIT.Library.CPJ4net.ActivemqUtil;
+using CPJIT.Library.CPJ4net.ActivemqUtil.Impl;
+using CPJIT.Library.CPJ4net.CommonUtil;
+using CPJIT.Library.CPJ4net.DataBaseUtil;
+using CPJIT.Library.CPJ4net.DataBaseUtil.Impl;
+using CPJIT.Library.CPJ4net.HttpUtil.Impl;
+using CPJIT.Library.CPJ4net.SocketUtil;
+using CPJIT.Library.CPJ4net.SocketUtil.Impl;
+using CPJIT.Library.CPJ4net.SocketUtil.Model;
 using System;
 using System.Collections;
 using System.Data;
@@ -16,7 +19,7 @@ namespace CPJIT.Library.Test
         #region 私有变量
         IActivemqClient activemqClient;
 
-        TcpClientUtil client;
+        TcpClient client;
         #endregion
 
 
@@ -27,7 +30,7 @@ namespace CPJIT.Library.Test
             this.FormClosing += this.Form1_FormClosing;
             
 
-            this.client = new TcpClientUtil("192.168.1.100", 60000);
+            this.client = new TcpClient("192.168.1.100", 60000);
             this.client.Terminator = "^^end^^";
             this.client.OnReceived += this.Client_OnReceived;
             this.client.Connect();
@@ -35,7 +38,7 @@ namespace CPJIT.Library.Test
 
         private void Client_OnReceived(object sender, DataEventArgs e)
         {
-            Util.CommonUtil.DelegateUtil.UIHelper(this.richTextBox1, () =>
+            DelegateUtil.UIHelper(this.richTextBox1, () =>
             {
                 this.richTextBox1.AppendText(e.Message.ToString() 
                     + Environment.NewLine 
@@ -67,7 +70,7 @@ namespace CPJIT.Library.Test
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            IDBAccess dBAccess = new SQLiteHelper(@"test.db3");
+            IDBAccess dBAccess = new SQLiteDBAccess(@"test.db3");
             string cmdText = "select * from t_user where user_name=@UserName";
             Hashtable paras = new Hashtable();
             paras.Add("@UserName", this.tbUserName.Text);
@@ -84,7 +87,7 @@ namespace CPJIT.Library.Test
         /// <param name="e"></param>
         private void Button4_Click(object sender, EventArgs e)
         {
-            IDBAccess dBAccess = new MySQLHelper("192.168.0.1", 3306, "blog", "root", "root");
+            IDBAccess dBAccess = new MySqlDBAccess("192.168.0.1", 3306, "blog", "root", "root");
             string cmdText = "select * from t_user where user_name=@UserName and user_password=@Password";
             Hashtable paras = new Hashtable();
             paras.Add("@UserName", this.tbUserName.Text);

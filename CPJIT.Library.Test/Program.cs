@@ -1,4 +1,4 @@
-﻿using CPJIT.Library.Util.SocketUtil;
+﻿using CPJIT.Library.CPJ4net.SocketUtil;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 # cpj4net
 cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、实用的工具。为项目源码架构的工作提供便利，增强源码的复用，极大的减少代码的重复工作量。    
-因为处于某些原因，上次将本库从github删除，感谢之前支持并点赞的码友。从本次提交开始，后续将不停的对cpj4net进行更新。    
+从版本1.0.2018.0105，cpj4net与之前版本基本不兼容，实现内容虽然是一样，但是项目结构发生变化，普遍面向接口，而且有些文件名称更改了名称。    
 
 
 ## 目录
@@ -10,17 +10,22 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 
 [`三. 主要工具类说明`](#三-主要工具类说明)    
 
-[`四. 其它`](#二-其它)
+[`四. 其它`](#四-其它)
 
 ## 一. 更新说明
-1. 新增了WCFInvoker。[1.0.2017.1129]
-2. 将数据库交互类接口化。[1.0.2017.1204]
-3. 新增了ActivemqUtil。[1.0.2017.1207]
+1. 新增了WCFInvoker。[V1.0.2017.1129]
+2. 将数据库交互类接口化。[V1.0.2017.1204]
+3. 新增了ActivemqUtil。[V1.0.2017.1207]
 4. 去掉了某些小于vs2017版本无法编译的语法糖。    
-包装win32 API，录制普通音质音频的工具。[1.0.2017.1213]
-5. 解决TCPClientUtil和TcpServerUtil接收数据粘包的问题。[1.0.2017.1216]
-6. 引入Newtonsoft.Json.dll，封装json格式化工具和字符串是否为json的校验工具。[1.0.2017.1218]
-7. 更新xml工具。遗弃之前的XmlDocumentUtil工具类，更名为XmlUtil，基于更轻更便捷的Linq to xml，即XDocument。[1.0.2017.1221]
+包装win32 API，录制普通音质音频的工具。[V1.0.2017.1213]
+5. 解决TCPClientUtil和TcpServerUtil接收数据粘包的问题。[V1.0.2017.1216]
+6. 引入Newtonsoft.Json.dll，封装json格式化工具和字符串是否为json的校验工具。[V1.0.2017.1218]
+7. 更新xml工具。遗弃之前的XmlDocumentUtil工具类，更名为XmlUtil，基于更轻更便捷的Linq to xml，即XDocument。[V1.0.2017.1221]
+8. 新增OracleClientDBAccess类，该Oracle数据库访问工具是依赖Oracle客户端或者需要安装ODAC。    
+数据库访问工具全部接口化，使用起来更加标准化。    
+解决TcpClient主动断开连接时服务端收不到断开状态监听的问题。    
+解决TcpServer主动断开连接时客户端不友好信息提示的问题。    
+修改了部分文件的名称。[V1.0.2018.0105]
 
 ## 二. 引用组件
 工程中有一个dll文件夹，因为cpj4net中的有一些简单的工具类并非是原生工具，而是对一些工具类进行了二次封装。    
@@ -32,9 +37,13 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 - System.Data.SQLite.dll
 - Apache.NMS.ActiveMQ.dll
 - Apache.NMS.dll
+- Oracle.DataAccess.dll
 
 
-注意：cpj4net的Oracle数据库交互工具是依赖Oracle.ManagedDataAccess.dll，该dll不依赖Oracle客户端应用，但是执行效率相比依赖Oracle客户端的方式要低一点。使用该工具类的码友请根据实际运用场景的数据交互量决定。    
+注意：    
+① OrcleDBAccess数据库访问工具不依赖客户端，随时随地使用，在数据库交互效率不要求很高的情况下，该工具能充分的满足需求。   
+② OracleClientDBAccess数据库访问工具需依赖Oracle客户端或者安装ODAC，这是基于Oracle提供的Oracle.DataAccess.dll的封装。该库的效率比Oracle.ManagedDataAccess.dll和微软的System.Data.OracleClient的效率都要快。
+具体使用哪种Oracle数据库访问工具，根据各位码友居停的环境抉择。
 
 ## 三. 主要工具类说明
 ### 1. IniUtil.cs

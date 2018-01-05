@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPJIT.Library.Test", "CPJIT.Library.Test\CPJIT.Library.Test.csproj", "{BABA535A-4340-4791-8257-B6FA8F187BB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPJIT.Library.Util", "CPJIT.Library.Util\CPJIT.Library.Util.csproj", "{57805426-3473-4021-8C80-28187FAD93EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPJIT.Library.CPJ4net", "CPJIT.Library.CPJ4net\CPJIT.Library.CPJ4net.csproj", "{57805426-3473-4021-8C80-28187FAD93EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C9433702-2689-4C27-B614-DD179D5BFC5A}
 	EndGlobalSection
 EndGlobal

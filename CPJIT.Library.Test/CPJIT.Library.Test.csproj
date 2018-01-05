@@ -67,9 +67,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CPJIT.Library.Util\CPJIT.Library.Util.csproj">
+    <ProjectReference Include="..\CPJIT.Library.CPJ4net\CPJIT.Library.CPJ4net.csproj">
       <Project>{57805426-3473-4021-8c80-28187fad93ef}</Project>
-      <Name>CPJIT.Library.Util</Name>
+      <Name>CPJIT.Library.CPJ4net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

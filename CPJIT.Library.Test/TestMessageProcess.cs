@@ -1,11 +1,11 @@
-﻿using CPJIT.Library.Util.ActivemqUtil.Impl;
-using CPJIT.Library.Util.ActivemqUtil.Enum;
+﻿using CPJIT.Library.CPJ4net.ActivemqUtil.Impl;
+using CPJIT.Library.CPJ4net.ActivemqUtil.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CPJIT.Library.Util.ActivemqUtil;
-using CPJIT.Library.Util.ActivemqUtil.Model;
+using CPJIT.Library.CPJ4net.ActivemqUtil;
+using CPJIT.Library.CPJ4net.ActivemqUtil.Model;
 
 namespace CPJ.Test
 {
