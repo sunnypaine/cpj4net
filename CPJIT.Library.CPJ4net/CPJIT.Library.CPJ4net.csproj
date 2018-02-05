@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CPJIT.Library.CPJ4net</RootNamespace>
     <AssemblyName>CPJIT.Library.CPJ4net</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -44,6 +44,21 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\DLL\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\DLL\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\DLL\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\DLL\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.GridFS">
+      <HintPath>..\DLL\MongoDB.Driver.GridFS.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Legacy">
+      <HintPath>..\DLL\MongoDB.Driver.Legacy.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\DLL\MySql.Data.dll</HintPath>
     </Reference>
@@ -55,6 +70,18 @@
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\DLL\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\DLL\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\DLL\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Redis">
+      <HintPath>..\DLL\ServiceStack.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\DLL\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -85,11 +112,17 @@
     <Compile Include="CommonUtil\StringUtil.cs" />
     <Compile Include="CommonUtil\ZipUtil.cs" />
     <Compile Include="DataBaseUtil\IDBAccess.cs" />
+    <Compile Include="DataBaseUtil\IMongoDBAccess.cs" />
+    <Compile Include="DataBaseUtil\Impl\AbstractRedisPoolManger.cs" />
+    <Compile Include="DataBaseUtil\Impl\MongoDBAccess.cs" />
     <Compile Include="DataBaseUtil\Impl\MsSqlDBAccess.cs" />
     <Compile Include="DataBaseUtil\Impl\MySqlDBAccess.cs" />
     <Compile Include="DataBaseUtil\Impl\OracleClientDBAccess.cs" />
     <Compile Include="DataBaseUtil\Impl\OracleDBAccess.cs" />
+    <Compile Include="DataBaseUtil\Impl\RedisDBAccess.cs" />
     <Compile Include="DataBaseUtil\Impl\SQLiteDBAccess.cs" />
+    <Compile Include="DataBaseUtil\IRedisDBAccess.cs" />
+    <Compile Include="DataBaseUtil\Model\BaseMongoEntity.cs" />
     <Compile Include="DirecoryUtil\IniUtil.cs" />
     <Compile Include="DirecoryUtil\FolderUtil.cs" />
     <Compile Include="HttpUtil\IWebServiceInvoker.cs" />

@@ -189,7 +189,7 @@ namespace CPJIT.Library.CPJ4net.SocketUtil.Impl
                 }
                 else
                 {
-                    byte[] receiveData = new byte[receiveCount];
+                    //byte[] receiveData = new byte[receiveCount];
                     string tmpMsg = this.Encoding.GetString(dataEventArgs.Bytes, 0, receiveCount);
                     if (this.socketClient.Available > 0)//表示消息还没有接收完
                     {

@@ -76,7 +76,7 @@ namespace CPJIT.Library.CPJ4net.DirectoryUtil
                 System.IO.File.Create(path).Close();
             }
             StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(section, key, def, temp, 255, path);
+            GetPrivateProfileString(section, key, def, temp, 255, path);
             return temp.ToString();
         }
     }

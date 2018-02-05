@@ -1,6 +1,6 @@
 # cpj4net
 cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、实用的工具。为项目源码架构的工作提供便利，增强源码的复用，极大的减少代码的重复工作量。    
-从版本1.0.2018.0105，cpj4net与之前版本基本不兼容，实现内容虽然是一样，但是项目结构发生变化，普遍面向接口，而且有些文件名称更改了名称。    
+从版本1.0.2018.0205开始，工程的.NET版本升级到4.5。请使用4.0的码友注意。不仅是微软的官网对.NET的维护至少是4.5.1，而且很多三方库对C#的支持也是从.NET4.5进行了大版本的更新。    
 
 
 ## 目录
@@ -26,6 +26,8 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 解决TcpClient主动断开连接时服务端收不到断开状态监听的问题。    
 解决TcpServer主动断开连接时客户端不友好信息提示的问题。    
 修改了部分文件的名称。[V1.0.2018.0105]
+9. 新增MongoDB和Redis数据库的访问。    
+修改工程的.NET版本，将4.0升级到4.5。[V1.0.2018.0205]
 
 ## 二. 引用组件
 工程中有一个dll文件夹，因为cpj4net中的有一些简单的工具类并非是原生工具，而是对一些工具类进行了二次封装。    
@@ -443,6 +445,94 @@ class TestMessageProcess2 : AbstractMessageManager
         }
         Console.WriteLine("接收到消息：" + e.Text);
     }
+}
+```
+
+### 9. MongoDBAccess.cs
+`说明` 将MongoDB提供的C#驱动进行了二次封装，将重复的代码操作进行整理，提供简便快捷统一的操作方式。    
+
+`使用示例`
+```
+private void BtnMongoDB_Click(object sender, RoutedEventArgs e)
+{
+    IMongoDBAccess mongodb = new MongoDBAccess(new string[] { "192.168.0.1:27017" }, "blog");
+
+    string articleId = "00000000000000000020171011162939603";//文章Id。
+    string newArticleId = "000000000000000000" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+    Article article = null;
+
+    //查询
+    //通过Expression表达式筛选
+    article = mongodb.Select<Article>("article", p => p.ArticleId.Equals(articleId));
+    //通过FilterDefinition筛选
+    //article = mongodb.Select<Article>("article", Builders<Article>.Filter.Eq("_id", ObjectId.Parse("59ddd6736a1b40287c329ec6")));
+    article = mongodb.Select<Article>("article", Builders<Article>.Filter.Eq("articleId", articleId));
+    //通过IDictionary筛选
+    IDictionary<string, object> dict = new Dictionary<string, object>();
+    dict.Add("articleId", articleId);
+    article = mongodb.Select<Article>("article", dict);
+
+    //新增
+    //新增一条
+    mongodb.Insert<Article>("article", new Article() { ArticleId = newArticleId, ArticleContent = newArticleId + "的测试内容。" });
+    //新增多条
+    IList<Article> listInsert = new List<Article>();
+    for (int i = 0; i < 5; i++)
+    {
+        newArticleId = "000000000000000000" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+        listInsert.Add(new Article() { ArticleId = newArticleId, ArticleContent = newArticleId + "的测试内容。" });
+        System.Threading.Thread.Sleep(10);
+    }
+    mongodb.InsertMany<Article>("article", listInsert);
+
+    //删除
+    //通过Expression表达式筛选
+    mongodb.Delete<Article>("article", p => p.ArticleId.Equals("00000000000000000020180131104506423"));
+    //通过FitlerDefinition筛选
+    mongodb.Delete<Article>("article", Builders<Article>.Filter.Eq("articleId", articleId));
+    //通过IDictionary筛选
+    IDictionary<string, object> deleteFilter = new Dictionary<string, object>();
+    deleteFilter.Add("articleId", "00000000000000000020180131104506413");
+    mongodb.Delete<Article>("article", deleteFilter);
+
+    //修改
+    //Expression+UpdateDefinition
+    mongodb.Update<Article>("article", p => p.ArticleId.Equals("00000000000000000020180131104338174"), Builders<Article>.Update.Set("articleContent", "我是通过Expression+UpdateDefinition修改后的值。"));
+    //Expression+IDictionary
+    mongodb.Update<Article>("article", p => p.ArticleId.Equals("00000000000000000020180131104502350"), Builders<Article>.Update.Set("articleContent", "我是通过Expression+IDictionary修改后的值。"));
+    //FilterDefinition+UpdateDefinition
+    mongodb.Update<Article>("article", p => p.ArticleId.Equals("00000000000000000020180131104503891"), Builders<Article>.Update.Set("articleContent", "我是通过FilterDefinition+UpdateDefinition修改后的值。"));
+    //FilterDefinition+IDictionary
+    mongodb.Update<Article>("article", p => p.ArticleId.Equals("00000000000000000020180131104506403"), Builders<Article>.Update.Set("articleContent", "我是通过FilterDefinition+IDictionary修改后的值。"));
+    //IDictionary+UpdateDefinition
+    mongodb.Update<Article>("article", p => p.ArticleId.Equals("00000000000000000020180131110218958"), Builders<Article>.Update.Set("articleContent", "我是通过IDictionary+UpdateDefinition修改后的值。"));
+    //IDictionary+IDictionary
+    mongodb.Update<Article>("article", p => p.ArticleId.Equals("00000000000000000020180131110236723"), Builders<Article>.Update.Set("articleContent", "我是通过IDictionary+IDictionary修改后的值。"));
+
+    //this.tbContent.Text = article.ArticleContent;
+}
+```
+
+### 10. RedisDBAccess.cs
+`说明` 将ServiceStatck进行二次封装。
+
+`使用示例`
+```
+private void BtnRedis_Click(object sender, RoutedEventArgs e)
+{
+	IRedisAccess redis = new RedisAccess(new string[] { "123456@192.168.0.1:6379" }, new string[] { "123456@192.168.0.1:6379" });
+
+	Article article = new Article();
+	article.ArticleId = "0000000001";
+	article.ArticleContent = "测试内容0000000001";
+	redis.Add<Article>(article.ArticleId, article);
+
+	MessageBox.Show(redis.Get<Article>("0000000001").ArticleContent);
+
+	redis.Remove("0000000001");
+
+	redis.Dispose();
 }
 ```
 

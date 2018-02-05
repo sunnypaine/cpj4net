@@ -160,7 +160,8 @@ namespace CPJIT.Library.CPJ4net.HttpUtil.Impl
                     CodeCompileUnit unit = new CodeCompileUnit();
                     unit.Namespaces.Add(nmspace);
 
-                    ServiceDescriptionImportWarnings warning = importer.Import(nmspace, unit);
+                    //ServiceDescriptionImportWarnings warning = importer.Import(nmspace, unit);
+                    importer.Import(nmspace, unit);
                     CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
 
                     CompilerParameters parameter = new CompilerParameters();
