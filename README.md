@@ -542,7 +542,7 @@ private void BtnRedis_Click(object sender, RoutedEventArgs e)
 如果你的客户端安装的Oracle Client程序是32位的，则你的主程序引用本工具库（CPJIT.Libaray.CPJ4net.dll）厚，你的主程序属性的生成栏的“首选32位”复选框就要勾选上。
 如果你的客户端安装的Oracle Client程序是64位的，则你的主程序属性的生成栏的“首选32位”复选框就不可勾选上。
 如下图所示：    
-![Oracle Client Build](https://gitee.com/sunnypaine/cpj4net/tree/master/ReadmeSource/build.png)
+![请到ReadmeSource文件夹中查看buld.png图片文件](file:///F:/Cache/github/cpj4net/ReadmeSource/build.png)
 
 
 ## 四. 其它
