@@ -1,6 +1,7 @@
 ﻿using CPJIT.Library.CPJ4net.ActivemqUtil;
 using CPJIT.Library.CPJ4net.ActivemqUtil.Impl;
 using CPJIT.Library.CPJ4net.CommonUtil;
+using CPJIT.Library.CPJ4net.PropertiesUtil;
 using CPJIT.Library.CPJ4net.DataBaseUtil;
 using CPJIT.Library.CPJ4net.DataBaseUtil.Impl;
 using CPJIT.Library.CPJ4net.HttpUtil.Impl;
@@ -129,6 +130,15 @@ namespace CPJIT.Library.Test
             activemqClient.Connect();
             messageManager.SubscribeDestination();
         }
+        
+        /// <summary>
+        /// 配置信息自动注入测试
+        /// </summary>
+        public static CPJ.Test.Model.ConfigModel.AppConfig AppConfig { get; set; }
+        private void button8_Click(object sender, EventArgs e)
+        {
+            AppConfig = ConfigurationUtil.ScanType<CPJ.Test.Model.ConfigModel.AppConfig>();
+        }
 
         /// <summary>
         /// 窗体关闭前发生
@@ -142,7 +152,7 @@ namespace CPJIT.Library.Test
                 this.activemqClient.Close();
                 this.activemqClient = null;
             }
-        }
-        #endregion
+        }        
+        #endregion        
     }
 }
