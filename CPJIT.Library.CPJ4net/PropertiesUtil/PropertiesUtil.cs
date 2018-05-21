@@ -20,7 +20,7 @@ namespace CPJIT.Library.CPJ4net.PropertiesUtil
         /// <summary>
         /// 配置信息字典。
         /// </summary>
-        IDictionary<string, string> dict = new ConcurrentDictionary<string, string>();
+        IDictionary<string, object> dict = new ConcurrentDictionary<string, object>();
         #endregion
 
 
@@ -52,7 +52,7 @@ namespace CPJIT.Library.CPJ4net.PropertiesUtil
         /// </summary>
         /// <param name="key">键</param>
         /// <returns></returns>
-        public string this[string key]
+        public object this[string key]
         {
             get
             {
@@ -75,7 +75,7 @@ namespace CPJIT.Library.CPJ4net.PropertiesUtil
         /// <summary>
         /// 获取配置信息的所有值。
         /// </summary>
-        public ICollection<string> Values
+        public ICollection<object> Values
         {
             get { return dict.Values; }
         }
