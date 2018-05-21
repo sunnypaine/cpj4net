@@ -48,3 +48,5 @@ D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\bin\Debug
 D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Interfaces.xml
 D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Redis.xml
 D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Text.xml
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\obj\Debug\CPJIT.Library.CPJ4net.csprojResolveAssemblyReference.cache
+D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\obj\Debug\CPJIT.Library.CPJ4net.csproj.CopyComplete

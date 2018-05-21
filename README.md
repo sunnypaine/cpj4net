@@ -29,6 +29,7 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 9. 新增MongoDB和Redis数据库的访问。    
 修改工程的.NET版本，将4.0升级到4.5。[V1.0.2018.0205]
 10. 新增properties配置信息自动注入工具。使用方式见CPJ.Library.Test的button8_Click。[V1.0.2018.0323]
+11. 重新定义properties工具的意义。切除ConfigurationUtil类。不再用于自动注入配置信息，而是作为properties文件的操作。[V1.0.2018.0521]
 
 ## 二. 引用组件
 工程中有一个dll文件夹，因为cpj4net中的有一些简单的工具类并非是原生工具，而是对一些工具类进行了二次封装。    
@@ -60,11 +61,11 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 - path：表示ini配置文件的路径。    
 
 `使用示例`
-```
+```csharp
 IniUtil.WriteINI("Food", "Apple", "5", "d:/test.ini");
 ```
 上面的代码执行后，d盘中test.ini文件里的内容为：
-```
+```ini
 [Food]
 Apple=5
 ```
@@ -81,7 +82,7 @@ Apple=5
 - path：ini配置文件的路径。    
 
 `使用示例`    
-```
+```csharp
 StringBuilder sb = new StringBuilder();
 string count = IniOperate.ReadINI("Food", "Apple", "0", sb, 128, "d:/test.ini");
 Console.WriteLine("Apple的数量为：" + count);
@@ -98,7 +99,7 @@ Apple的数量为：5
 - func：操作控件的委托方法。    
 
 `使用示例`
-```
+```csharp
 DelegateUtil.UIHelper(this.textBox, ()=>
 {
     this.textBox.Text = "Hello World！";
@@ -110,7 +111,7 @@ DelegateUtil.UIHelper(this.textBox, ()=>
 `说明` 提供WCF服务接口式动态调用工具。    
 
 `使用示例`
-```
+```csharp
 static void Main()
 {
     WCFInvoker invoker = new WCFInvoker("192.168.0.1", 6666, TransferProtocol.TCP);
@@ -134,7 +135,7 @@ static void Main()
 `说明`  提供WebService动态调用工具。而无需生成代理类的方式。相对要更灵活。本质上是通过代码动态的生成了代理类的dll，所以效率相对人工的先生成代理类慢一些。    
 
 `使用示例`
-```
+```csharp
 void Main()
 {
 	WebServiceInvoker invoker = new WebServiceInvoker();
@@ -164,7 +165,7 @@ void Main()
 `说明` 将NMS进行封装。提供程序作为ActiveMQ的消费者时实现消息路由机制；提供程序作为ActiveMQ的消息生产者时，更方面的发送消息。此工具可使用IOC框架完成消息路由，完美契合，非常方便。    
 
 `使用示例-常规使用`
-```
+```csharp
 //该示例在解决方案中的Test工程中一斤更有示例了。详细的可以查看demo。
 class Program
 {
@@ -221,7 +222,7 @@ class TestMessageProcess2 : AbstractMessageManager
 }
 ```
 `使用示例-IOC容器使用`
-```
+```csharp
 ///IOC容器举例以Microsoft.Practice.Unity为例
 class Program
 {
@@ -292,7 +293,7 @@ class TestMessageProcess2 : AbstractMessageManager
 `说明` 将MongoDB提供的C#驱动进行了二次封装，将重复的代码操作进行整理，提供简便快捷统一的操作方式。    
 
 `使用示例`
-```
+```csharp
 private void BtnMongoDB_Click(object sender, RoutedEventArgs e)
 {
     IMongoDBAccess mongodb = new MongoDBAccess(new string[] { "192.168.0.1:27017" }, "blog");
@@ -360,7 +361,7 @@ private void BtnMongoDB_Click(object sender, RoutedEventArgs e)
 如果你的客户端安装的Oracle Client程序是32位的，则你的主程序引用本工具库（CPJIT.Libaray.CPJ4net.dll）厚，你的主程序属性的生成栏的“首选32位”复选框就要勾选上。
 如果你的客户端安装的Oracle Client程序是64位的，则你的主程序属性的生成栏的“首选32位”复选框就不可勾选上。
 如下图所示：    
-![请到ReadmeSource文件夹中查看buld.png图片文件](file:///../ReadmeSource/build.png)
+![请到ReadmeSource文件夹中查看buld.png图片文件](https://github.com/sunnypaine/cpj4net/blob/master/ReadmeSource/build.png)
 
 
 ## 四. 其它

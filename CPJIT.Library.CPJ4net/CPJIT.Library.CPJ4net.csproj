@@ -111,11 +111,8 @@
     <Compile Include="CommonUtil\DelegateUtil.cs" />
     <Compile Include="CommonUtil\StringUtil.cs" />
     <Compile Include="CommonUtil\ZipUtil.cs" />
-    <Compile Include="PropertiesUtil\Attributes\ConfigurationAttribute.cs" />
-    <Compile Include="PropertiesUtil\ConfigurationUtil.cs" />
-    <Compile Include="PropertiesUtil\Attributes\ValueAttribute.cs" />
     <Compile Include="PropertiesUtil\Exceptions\PropertiesParseException.cs" />
-    <Compile Include="PropertiesUtil\ReadProperties.cs" />
+    <Compile Include="PropertiesUtil\PropertiesUtil.cs" />
     <Compile Include="DataBaseUtil\IDBAccess.cs" />
     <Compile Include="DataBaseUtil\IMongoDBAccess.cs" />
     <Compile Include="DataBaseUtil\Impl\AbstractRedisPoolManger.cs" />

@@ -147,7 +147,7 @@
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(133, 23);
             this.button8.TabIndex = 7;
-            this.button8.Text = "自动注入配置测试";
+            this.button8.Text = "properties测试";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 

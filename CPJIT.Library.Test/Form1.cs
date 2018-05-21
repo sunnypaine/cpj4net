@@ -29,7 +29,7 @@ namespace CPJIT.Library.Test
         {
             InitializeComponent();
             this.FormClosing += this.Form1_FormClosing;
-            
+
 
             this.client = new TcpClient("192.168.1.100", 60000);
             this.client.Terminator = "^^end^^";
@@ -41,8 +41,8 @@ namespace CPJIT.Library.Test
         {
             DelegateUtil.UIHelper(this.richTextBox1, () =>
             {
-                this.richTextBox1.AppendText(e.Message.ToString() 
-                    + Environment.NewLine 
+                this.richTextBox1.AppendText(e.Message.ToString()
+                    + Environment.NewLine
                     + Environment.NewLine);
             });
         }
@@ -130,14 +130,14 @@ namespace CPJIT.Library.Test
             activemqClient.Connect();
             messageManager.SubscribeDestination();
         }
-        
+
         /// <summary>
         /// 配置信息自动注入测试
         /// </summary>
-        public static CPJ.Test.Model.ConfigModel.AppConfig AppConfig { get; set; }
         private void button8_Click(object sender, EventArgs e)
         {
-            AppConfig = ConfigurationUtil.ScanType<CPJ.Test.Model.ConfigModel.AppConfig>();
+            PropertiesUtil propertiesUtil = new PropertiesUtil("application.properties");
+            MessageBox.Show("elk.wcf.bindingtype=" + propertiesUtil["elk.wcf.bindingtype"]);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace CPJIT.Library.Test
                 this.activemqClient.Close();
                 this.activemqClient = null;
             }
-        }        
-        #endregion        
+        }
+        #endregion
     }
 }

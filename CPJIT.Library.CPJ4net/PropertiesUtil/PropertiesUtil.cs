@@ -1,6 +1,7 @@
 ﻿using CPJIT.Library.CPJ4net.PropertiesUtil.Exceptions;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,44 +14,24 @@ namespace CPJIT.Library.CPJ4net.PropertiesUtil
     /// <summary>
     /// 提供读取properties配置文件。
     /// </summary>
-    public class ReadProperties : Hashtable
+    public class PropertiesUtil
     {
         #region 私有变量
-        #endregion
-
-
-        #region 公共属性
         /// <summary>
-        /// 获取 System.Collections.ICollection 包含中的键 System.Collections.Hashtable。
+        /// 配置信息字典。
         /// </summary>
-        public override ICollection Keys
-        {
-            get { return base.Keys; }
-        }
+        IDictionary<string, string> dict = new ConcurrentDictionary<string, string>();
         #endregion
 
 
         #region 构造方法
-        /// <summary>
-        /// 使用默认的参数创建实例。默认读取程序根路径下的application.properties
-        /// </summary>
-        /// <exception cref="FileNotFoundException">指定的文件application.properties找不到。</exception>
-        public ReadProperties()
-        {
-            if (!File.Exists(@"application.properties"))
-            {
-                throw new FileNotFoundException("未找到指定的文件application.properties");
-            }
-            LoadFile("application.properties");
-        }
-
         /// <summary>
         /// 使用指定的参数创建实例。
         /// </summary>
         /// <param name="propertiesUri">包含*.properties配置文件的路径。</param>
         /// <exception cref="ArgumentException">参数路径不合法。</exception>
         /// <exception cref="FileNotFoundException">指定的文件找不到。</exception>
-        public ReadProperties(string propertiesUri)
+        public PropertiesUtil(string propertiesUri)
         {
             if (!".properties".Equals(Path.GetExtension(propertiesUri)))
             {
@@ -65,7 +46,55 @@ namespace CPJIT.Library.CPJ4net.PropertiesUtil
         #endregion
 
 
+        #region 公共属性
+        /// <summary>
+        /// 获取指定键的项。
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <returns></returns>
+        public string this[string key]
+        {
+            get
+            {
+                if (dict.ContainsKey(key))
+                {
+                    return dict[key];
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 获取配置信息的所有键
+        /// </summary>
+        public ICollection<string> Keys
+        {
+            get { return dict.Keys; }
+        }
+
+        /// <summary>
+        /// 获取配置信息的所有值。
+        /// </summary>
+        public ICollection<string> Values
+        {
+            get { return dict.Values; }
+        }
+
+        /// <summary>
+        /// 获取配置信息的数量。
+        /// </summary>
+        public int Count
+        {
+            get { return dict.Count; }
+        }
+        #endregion
+
+
         #region 私有方法
+        /// <summary>
+        /// 加载并解析文件。
+        /// </summary>
+        /// <param name="proertiesUri"></param>
         private void LoadFile(string proertiesUri)
         {
             using (StreamReader reader = new StreamReader(proertiesUri))
@@ -94,29 +123,22 @@ namespace CPJIT.Library.CPJ4net.PropertiesUtil
 
                     string[] kv = line.Split('=');
                     string key = kv[0].Trim();
-                    string value = kv[1].Trim();
+                    string value = string.IsNullOrWhiteSpace(kv[1]) ? string.Empty : kv[1].Trim();
                     this.Add(key, value);
 
                     lineIndex++;
                 }
             }
         }
-        #endregion
 
-
-        #region 公共方法
-        /// <summary>
-        /// 将带有指定键和值的元素添加到 System.Collections.Hashtable 中。
-        /// </summary>
-        /// <param name="key">要添加的元素的键。</param>
-        /// <param name="value">要添加的元素的值。该值不能为null。</param>
-        public override void Add(object key, object value)
+        private void Add(string key, string value)
         {
-            if (value == null)
+            if (dict.ContainsKey(key))
             {
-                throw new ArgumentNullException("指定的参数value为null。");
+                throw new ArgumentException("已添加了具有相同键的项。");
             }
-            base.Add(key, value);
+
+            dict.Add(key, value);
         }
         #endregion
     }
