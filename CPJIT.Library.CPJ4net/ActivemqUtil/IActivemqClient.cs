@@ -54,17 +54,23 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
 
         #region 方法定义
         /// <summary>
-        /// 连接ActiveMQ
+        /// 连接ActiveMQ。
         /// </summary>
         void Connect();
 
         /// <summary>
-        /// 断开连接ActiveMQ
+        /// 断开连接ActiveMQ。
         /// </summary>
         void Close();
 
         /// <summary>
-        /// 订阅消息
+        /// 注册消费者。
+        /// <para>如果使用IConsumer接口注册消费者，则必须调用该接口。</para>
+        /// </summary>
+        void RegisterComsumer();
+
+        /// <summary>
+        /// 订阅消息。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destinationName"></param>
@@ -72,7 +78,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
         void SubscribeDestination(Enum.DestinationType destinationType, string destinationName, EventHandler<DataEventArgs> handler);
 
         /// <summary>
-        /// 订阅消息
+        /// 订阅消息。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destinationName"></param>
@@ -81,7 +87,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
         void SubscribeDestination(Enum.DestinationType destinationType, string destinationName, bool ignoreExpiration, EventHandler<DataEventArgs> handler);
 
         /// <summary>
-        /// 订阅消息
+        /// 订阅消息。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destinationName"></param>
@@ -92,14 +98,14 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
         void SubscribeDestination(Enum.DestinationType destinationType, string destinationName, string selector, bool ignoreExpiration, bool isDurable, EventHandler<DataEventArgs> handler);
 
         /// <summary>
-        /// 取消订阅
+        /// 取消订阅。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destination"></param>
         void CancelSubscribeDestination(Enum.DestinationType destinationType, string destination);
 
         /// <summary>
-        /// 发送文本消息
+        /// 发送文本消息。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destType"></param>
@@ -107,7 +113,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
         void Send(string text, Enum.DestinationType destinationType, string destination);
 
         /// <summary>
-        /// 发送文本消息
+        /// 发送文本消息。
         /// </summary>
         /// <param name="text"></param>
         /// <param name="destinationType"></param>
@@ -116,7 +122,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
         void Send(string text, Enum.DestinationType destinationType, string destinationName, bool isPersistent);
 
         /// <summary>
-        /// 发送文本消息
+        /// 发送文本消息。
         /// </summary>
         /// <param name="text"></param>
         /// <param name="msgProperties"></param>
@@ -126,7 +132,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
         void Send(string text, IDictionary<string, string> msgProperties, Enum.DestinationType destinationType, string destinationName, bool isPersistent);
 
         /// <summary>
-        /// 发送字节数组消息
+        /// 发送字节数组消息。
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="destinationType"></param>
@@ -134,7 +140,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
         void Send(byte[] bytes, Enum.DestinationType destinationType, string destinationName);
 
         /// <summary>
-        /// 发送字节数组消息
+        /// 发送字节数组消息。
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="destinationType"></param>
@@ -143,7 +149,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil
         void Send(byte[] bytes, Enum.DestinationType destinationType, string destinationName, bool isPersistent);
 
         /// <summary>
-        /// 发送字节数组消息
+        /// 发送字节数组消息。
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="msgProperties"></param>

@@ -50,3 +50,37 @@ D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\bin\Debug
 D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Text.xml
 D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\obj\Debug\CPJIT.Library.CPJ4net.csprojResolveAssemblyReference.cache
 D:\SunnyPaine\Programmer\DotNET C#\CPJIT.Library\CPJIT.Library.CPJ4net\obj\Debug\CPJIT.Library.CPJ4net.csproj.CopyComplete
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\CPJIT.Library.CPJ4net.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\CPJIT.Library.CPJ4net.pdb
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\Apache.NMS.ActiveMQ.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\Apache.NMS.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Bson.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Driver.Core.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Driver.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Driver.GridFS.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Driver.Legacy.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MySql.Data.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\Newtonsoft.Json.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\Oracle.DataAccess.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\Oracle.ManagedDataAccess.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Common.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Interfaces.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Redis.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Text.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\System.Data.SQLite.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\Apache.NMS.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\Apache.NMS.ActiveMQ.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Bson.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Driver.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Driver.Core.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Driver.GridFS.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\MongoDB.Driver.Legacy.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\Newtonsoft.Json.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Common.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Interfaces.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Redis.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\bin\Debug\ServiceStack.Text.xml
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\obj\Debug\CPJIT.Library.CPJ4net.csprojResolveAssemblyReference.cache
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\obj\Debug\CPJIT.Library.CPJ4net.dll
+D:\py\code-source\cpj4net\CPJIT.Library.CPJ4net\obj\Debug\CPJIT.Library.CPJ4net.pdb

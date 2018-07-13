@@ -56,8 +56,8 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         /// 接收消息
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected abstract void ReciverMessage(object sender, Model.DataEventArgs e);
+        /// <param name="args"></param>
+        protected abstract void ReciverMessage(object sender, Model.DataEventArgs args);
         #endregion
 
 

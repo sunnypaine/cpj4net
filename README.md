@@ -30,6 +30,7 @@ cpj4net是cpjit团队的C#语言公共库，为开发者封装了一些常用、
 修改工程的.NET版本，将4.0升级到4.5。[V1.0.2018.0205]
 10. 新增properties配置信息自动注入工具。使用方式见CPJ.Library.Test的button8_Click。[V1.0.2018.0323]
 11. 重新定义properties工具的意义。切除ConfigurationUtil类。不再用于自动注入配置信息，而是作为properties文件的操作。[V1.0.2018.0521]
+12. ActivemqUtil新增IConsumer消费者批量注册方式。[V1.0.2018.1444]
 
 ## 二. 引用组件
 工程中有一个dll文件夹，因为cpj4net中的有一些简单的工具类并非是原生工具，而是对一些工具类进行了二次封装。    
@@ -169,6 +170,7 @@ void Main()
 //该示例在解决方案中的Test工程中一斤更有示例了。详细的可以查看demo。
 class Program
 {
+    IActivemqClient activemqClient;
     void Main()
     {
         activemqClient = new ActivemqClient("failover:tcp://192.168.0.1:61616", "admin", "admin");
@@ -286,6 +288,53 @@ class TestMessageProcess2 : AbstractMessageManager
         }
         Console.WriteLine("接收到消息：" + e.Text);
     }
+}
+```
+`使用示例-IConsumer方式`
+```csharp
+//该示例在解决方案中的Test工程中一斤更有示例了。详细的可以查看demo。
+class Program
+{
+    IActivemqClient activemqClient;
+    void Main()
+    {
+        activemqClient = new ActivemqClient("failover:tcp://192.168.0.1:61616", "admin", "admin");
+        activemqClient.Connect();
+        //IConsumer批量注册方式
+        activemqClient.RegisterComsumer();
+    }
+}
+
+public class TestConsumer : IConsumer
+{
+    #region 公共属性，IConsumer成员
+    public string DestinationName { get; set; }
+    public DestinationType DestinationType { get; set; }
+    public bool IsSubscibe { get; set; }
+    #endregion
+
+
+    #region 构造方法
+    public TestConsumer()
+    {
+        this.DestinationName = "Topic.TestConsumer";
+        this.DestinationType = DestinationType.Topic;
+        this.IsSubscibe = true;
+    }
+    #endregion
+
+
+    #region 公共方法，IConsumer成员
+    public void Receive(object sender, DataEventArgs args)
+    {
+        if (args == null)
+        {
+            return;
+        }
+
+        Console.WriteLine("接收到消息：" + args.Text);
+    }
+    #endregion
 }
 ```
 

@@ -11,12 +11,21 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Model
     /// </summary>
     public class DataEventArgs : EventArgs
     {
+        /// <summary>
+        /// 字符串文本表示的消息。
+        /// </summary>
         public string Text
         { get; set; }
 
+        /// <summary>
+        /// 字节数组表示的消息。
+        /// </summary>
         public byte[] Bytes
         { get; set; }
 
+        /// <summary>
+        /// IMessage表示的消息。
+        /// </summary>
         public IMessage Message
         { get; set; }
 

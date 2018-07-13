@@ -99,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivemqUtil\IConsumer.cs" />
     <Compile Include="ActivemqUtil\IMessageManager.cs" />
     <Compile Include="ActivemqUtil\Impl\AbstractMessageManager.cs" />
     <Compile Include="ActivemqUtil\Model\DataEventArgs.cs" />

@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestConsumer.cs" />
     <Compile Include="TestMessageProcess.cs" />
   </ItemGroup>
   <ItemGroup>

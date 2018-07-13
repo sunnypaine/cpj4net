@@ -126,9 +126,14 @@ namespace CPJIT.Library.Test
         private void Button7_Click(object sender, EventArgs e)
         {
             activemqClient = new ActivemqClient("failover:tcp://192.168.0.1:61616", "admin", "admin");
-            IMessageManager messageManager = new CPJ.Test.TestMessageProcess(activemqClient);
             activemqClient.Connect();
+
+            //单consumer注册方式
+            IMessageManager messageManager = new CPJ.Test.TestMessageProcess(activemqClient);
             messageManager.SubscribeDestination();
+
+            //IConsumer批量注册方式
+            activemqClient.RegisterComsumer();
         }
 
         /// <summary>

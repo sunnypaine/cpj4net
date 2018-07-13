@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
@@ -387,7 +388,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
                 else
                 {
                     EventHandler<DataEventArgs> receiver = handler;
-                    messageConsumer.Listener += delegate (IMessage msg)
+                    messageConsumer.Listener += delegate(IMessage msg)
                     {
                         if (receiver == null)
                         {
@@ -457,7 +458,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
 
         #region 公共方法，IActivemqClient成员
         /// <summary>
-        /// 连接ActiveMQ
+        /// 连接ActiveMQ。
         /// </summary>
         /// <param name="brokerUri">AcitveMQ服务代理的地址</param>
         public void Connect()
@@ -494,7 +495,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
             }
             catch (Exception ex)
             {
-                if (this.Error!=null)
+                if (this.Error != null)
                 {
                     this.Error(this, new ExceptionEventArgs() { Exception = ex });
                 }
@@ -502,7 +503,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 断开与ActiveMQ的连接
+        /// 断开与ActiveMQ的连接。
         /// </summary>
         public void Close()
         {
@@ -530,7 +531,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
             //释放Queue模式的消费者
             foreach (IMessageConsumer consumer in this.consumerQueueDict.Values)
             {
-                if (consumer!=null)
+                if (consumer != null)
                 {
                     consumer.Close();
                     consumer.Dispose();
@@ -578,7 +579,35 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 订阅一个目标
+        /// 注册消费者。
+        /// <para>如果使用IConsumer接口注册消费者，则必须调用该方法。</para>
+        /// </summary>
+        public void RegisterComsumer()
+        {
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (Assembly assembly in assemblies)
+            {
+                Type[] typeConsumers = assembly.GetTypes().Where(p => !p.IsAbstract && p.IsPublic && p.IsClass && typeof(IConsumer).IsAssignableFrom(p)).ToArray();
+                foreach (Type typeConsumer in typeConsumers)
+                {
+                    if (!typeof(IConsumer).IsAssignableFrom(typeConsumer))
+                    {
+                        continue;
+                    }
+
+                    IConsumer consumer = (IConsumer)Activator.CreateInstance(typeConsumer);
+                    if (!consumer.IsSubscibe)
+                    {
+                        continue;
+                    }
+                    this.SubscribeDestination(consumer.DestinationType, consumer.DestinationName, consumer.Receive);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 订阅一个目标。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destinationName"></param>
@@ -590,7 +619,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 订阅一个目标
+        /// 订阅一个目标。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destinationName"></param>
@@ -603,7 +632,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 订阅一个目标
+        /// 订阅一个目标。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destinationName"></param>
@@ -618,7 +647,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 取消订阅一个目标
+        /// 取消订阅一个目标。
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="destination"></param>
@@ -648,7 +677,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 发送文本消息
+        /// 发送文本消息。
         /// </summary>
         /// <param name="text"></param>
         /// <param name="destinationType"></param>
@@ -659,7 +688,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 发送文本消息
+        /// 发送文本消息。
         /// </summary>
         /// <param name="text"></param>
         /// <param name="destinationType"></param>
@@ -671,7 +700,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 发送文本消息
+        /// 发送文本消息。
         /// </summary>
         /// <param name="text"></param>
         /// <param name="messageProperties"></param>
@@ -707,7 +736,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 发送字节数组消息
+        /// 发送字节数组消息。
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="destinationType"></param>
@@ -718,7 +747,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 发送字节数组消息
+        /// 发送字节数组消息。
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="destinationType"></param>
@@ -730,7 +759,7 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 发送字节数组消息
+        /// 发送字节数组消息。
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="messageProperties"></param>
@@ -766,17 +795,20 @@ namespace CPJIT.Library.CPJ4net.ActivemqUtil.Impl
         }
 
         /// <summary>
-        /// 释放对象
+        /// 析构函数，释放对象。
         /// </summary>
-        public void Dispose()
+        ~ActivemqClient()
         {
             this.Close();
         }
+        #endregion
 
+
+        #region 公共方法，IDisposable成员
         /// <summary>
-        /// 析构函数，释放对象
+        /// 释放对象
         /// </summary>
-        ~ActivemqClient()
+        public void Dispose()
         {
             this.Close();
         }
